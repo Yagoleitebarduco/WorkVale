@@ -1,0 +1,103 @@
+/* Estilos customizados para melhorar a experiência e manter a paleta */
+input,
+select,
+textarea {
+    transition: all 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    box-shadow: 0 0 0 3px rgba(106, 38, 152, 0.2);
+    border-color: var(--color-Primary);
+    outline: none;
+}
+
+/* Custom scroll para textarea */
+textarea {
+    resize: vertical;
+}
+
+/* Ajuste para placeholder mais suave */
+::placeholder {
+    color: #adb5bd;
+    opacity: 1;
+}
+
+/* Estilos para as etapas do formulário */
+.form-step {
+    display: none;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.form-step.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.step-indicator {
+    transition: all 0.3s ease;
+}
+
+.step-indicator.active {
+    background-color: var(--color-Primary);
+    color: white;
+    transform: scale(1.05);
+}
+
+.step-indicator.completed {
+    background-color: var(--color-Primary-dark);
+    color: white;
+}
+
+/* Classes utilitárias para usar as variáveis no Tailwind */
+.bg-Primary {
+    background-color: var(--color-Primary);
+}
+
+.bg-Primary-dark {
+    background-color: var(--color-Primary-dark);
+}
+
+.bg-Primary-light {
+    background-color: var(--color-Primary-light);
+}
+
+.text-Primary {
+    color: var(--color-Primary);
+}
+
+.text-Primary-light {
+    color: var(--color-Primary-light);
+}
+
+.text-Dark {
+    color: var(--color-Dark);
+}
+
+.border-Primary {
+    border-color: var(--color-Primary);
+}
+
+.hover\:bg-Primary-dark:hover {
+    background-color: var(--color-Primary-dark);
+}
+
+.focus\:border-Primary:focus {
+    border-color: var(--color-Primary);
+}
+
+.focus\:ring-Primary:focus {
+    --tw-ring-color: var(--color-Primary);
+}
