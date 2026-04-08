@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +23,7 @@
             margin: 0 auto;
             background: white;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             overflow: hidden;
         }
 
@@ -82,7 +81,7 @@
         .step.active .step-circle {
             background: #222;
             color: white;
-            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 0 3px rgba(0,0,0,0.1);
         }
 
         .step-label {
@@ -136,11 +135,6 @@
             font-size: 14px;
         }
 
-        .form-group label .required-star {
-            color: #ff4444;
-            margin-left: 4px;
-        }
-
         .form-group input,
         .form-group select,
         .form-group textarea {
@@ -150,7 +144,6 @@
             border-radius: 6px;
             font-size: 14px;
             font-family: inherit;
-            transition: border-color 0.2s;
         }
 
         .form-group input:focus,
@@ -158,14 +151,6 @@
         .form-group textarea:focus {
             outline: none;
             border-color: #888;
-        }
-
-        /* Estilo para campos com erro */
-        .form-group input.error,
-        .form-group select.error,
-        .form-group textarea.error {
-            border-color: #ff4444;
-            background-color: #fff8f8;
         }
 
         .form-group textarea {
@@ -177,13 +162,6 @@
             font-size: 12px;
             color: #888;
             margin-top: 6px;
-        }
-
-        .error-message {
-            color: #ff4444;
-            font-size: 12px;
-            margin-top: 4px;
-            display: block;
         }
 
         .security-note {
@@ -263,32 +241,25 @@
         }
 
         @media (max-width: 600px) {
-
-            .form-container,
-            .header {
+            .form-container, .header {
                 padding: 20px;
             }
-
             .progress-bar {
                 padding: 20px 20px 0 20px;
             }
-
             .form-actions {
                 flex-direction: column;
             }
-
             .btn {
                 width: 100%;
                 text-align: center;
             }
-
             .checkbox-group {
                 gap: 12px;
             }
         }
     </style>
 </head>
-
 <body>
     <div class="container">
         <div class="progress-bar">
@@ -313,8 +284,8 @@
         </div>
 
         <div class="header">
-            <h1 id="header-title">Dados do Negocio</h1>
-            <p id="header-subtitle">Informe seus dados da sua empresa para começar</p>
+            <h1 id="header-title">Dados Pessoais</h1>
+            <p id="header-subtitle">Informe seus dados básicos para começar</p>
         </div>
 
         <div class="form-container">
@@ -324,36 +295,19 @@
                 <!-- PASSO 1 - DADOS PESSOAIS -->
                 <div class="form-step active-step" data-step="1">
                     <div class="form-group">
-                        <label for="nome">Razão Social <span class="required-star">*</span></label>
+                        <label for="nome">Nome Completo</label>
                         <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo">
-                    </div>
-                    <div class="form-group">
-                        <label for="nome_fantasia">Nome Fantasia</label>
-                        <input type="text" id="nome_fantasia" name="nome_fantasia" placeholder="Digite seu nome fantasia">
                     </div>
 
                     <div class="form-group">
-                        <label for="cpf_cnpj">CPF ou CNPJ <span class="required-star">*</span></label>
-                        <input type="text" id="cpf_cnpj" name="cpf_cnpj" placeholder="000.000.000-00 ou 00.000.000/0000-00">
+                        <label for="cpf">CPF</label>
+                        <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00">
                         <div class="field-hint">Essencial para segurança e evitar perfis falsos</div>
                     </div>
 
                     <div class="form-group">
-                        <label for="area_atuacao">Área de Atuação Principal <span class="required-star">*</span></label>
-                        <select id="area_atuacao" name="area_atuacao">
-                            <option value="">Selecione a área de atuação</option>
-                            <option value="manutencao">Manutenção</option>
-                            <option value="ti">TI / Tecnologia</option>
-                            <option value="eventos">Eventos</option>
-                            <option value="design">Design</option>
-                            <option value="marketing">Marketing</option>
-                            <option value="consultoria">Consultoria</option>
-                            <option value="construcao">Construção Civil</option>
-                            <option value="saude">Saúde</option>
-                            <option value="educacao">Educação</option>
-                            <option value="financeiro">Financeiro</option>
-                        </select>
-                        <div class="field-hint">Selecione a área principal da sua atuação profissional</div>
+                        <label for="data_nascimento">Data de Nascimento</label>
+                        <input type="text" id="data_nascimento" name="data_nascimento" placeholder="dd/mm/aaaa">
                     </div>
 
                     <div class="security-note">
@@ -364,19 +318,13 @@
                 <!-- PASSO 2 - CONTATO -->
                 <div class="form-step" data-step="2">
                     <div class="form-group">
-                        <label for="email">Nome do Responsavel/Recrutador <span class="required-star">*</span></label>
-                        <input type="email" id="nome_responsavel" name="nome_responsavel" placeholder="Responsavel/Recrutador">
-                        <div class="field-hint"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">E-mail Cor<span class="required-star">*</span></label>
+                        <label for="email">E-mail</label>
                         <input type="email" id="email" name="email" placeholder="seu@email.com">
                         <div class="field-hint">Será usado como login</div>
                     </div>
 
                     <div class="form-group">
-                        <label for="whatsapp">WhatsApp <span class="required-star">*</span></label>
+                        <label for="whatsapp">WhatsApp</label>
                         <input type="tel" id="whatsapp" name="whatsapp" placeholder="(13) 99999-9999">
                         <div class="field-hint">Para contato rápido e notificações</div>
                     </div>
@@ -385,7 +333,7 @@
                 <!-- PASSO 3 - LOCALIZAÇÃO -->
                 <div class="form-step" data-step="3">
                     <div class="form-group">
-                        <label for="cidade">Cidade <span class="required-star">*</span></label>
+                        <label for="cidade">Cidade</label>
                         <select id="cidade" name="cidade">
                             <option value="">Selecione sua cidade</option>
                             <option value="iguape">Iguape</option>
@@ -400,7 +348,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="bairro">Bairro <span class="required-star">*</span></label>
+                        <label for="bairro">Bairro</label>
                         <input type="text" id="bairro" name="bairro" placeholder="Digite seu bairro">
                     </div>
 
@@ -412,13 +360,13 @@
                 <!-- PASSO 4 - PERFIL PROFISSIONAL -->
                 <div class="form-step" data-step="4">
                     <div class="form-group">
-                        <label for="titulo">Título Profissional <span class="required-star">*</span></label>
+                        <label for="titulo">Título Profissional</label>
                         <input type="text" id="titulo" name="titulo" placeholder="Ex: Eletricista, Designer, Redator">
                         <div class="field-hint">Seu título principal para aparecer nas buscas</div>
                     </div>
 
                     <div class="form-group">
-                        <label>Categorias de Atuação (secundárias)</label>
+                        <label>Categorias de Atuação</label>
                         <div class="checkbox-group">
                             <div class="checkbox-item">
                                 <input type="checkbox" id="cat_manutencao" name="categorias[]" value="manutencao">
@@ -445,7 +393,6 @@
                                 <label for="cat_consultoria">Consultoria</label>
                             </div>
                         </div>
-                        <div class="field-hint">Selecione outras áreas que você também atua</div>
                     </div>
 
                     <div class="form-group">
@@ -487,8 +434,8 @@
         // Configurações de cada passo
         const stepConfig = {
             1: {
-                title: 'Dados do Negocio',
-                subtitle: 'Informe os dados da sua empresa para começar'
+                title: 'Dados Pessoais',
+                subtitle: 'Informe seus dados básicos para começar'
             },
             2: {
                 title: 'Contato',
@@ -496,7 +443,7 @@
             },
             3: {
                 title: 'Localização',
-                subtitle: 'Onde sua empresa está localizada?'
+                subtitle: 'Onde você está localizado?'
             },
             4: {
                 title: 'Perfil Profissional',
@@ -504,93 +451,13 @@
             }
         };
 
-        // Lista de campos obrigatórios por passo
-        const requiredFieldsByStep = {
-            1: ['nome', 'cpf_cnpj', 'area_atuacao'],
-            2: ['email', 'whatsapp'],
-            3: ['cidade', 'bairro'],
-            4: ['titulo']
-        };
-
-        // Função para limpar erros de um campo específico
-        function clearFieldError(fieldId) {
-            const field = document.getElementById(fieldId);
-            if (field) {
-                field.classList.remove('error');
-                const errorMsg = field.parentNode.querySelector('.error-message');
-                if (errorMsg) {
-                    errorMsg.remove();
-                }
-            }
-        }
-
-        // Função para limpar todos os erros de um passo
-        function clearStepErrors(step) {
-            const fields = requiredFieldsByStep[step] || [];
-            fields.forEach(fieldId => {
-                clearFieldError(fieldId);
-            });
-        }
-
-        // Função para marcar erro em um campo específico
-        function markFieldError(fieldId, message) {
-            const field = document.getElementById(fieldId);
-            if (field) {
-                field.classList.add('error');
-                
-                // Remove mensagem de erro existente
-                const existingError = field.parentNode.querySelector('.error-message');
-                if (existingError) {
-                    existingError.remove();
-                }
-                
-                // Adiciona nova mensagem de erro
-                const errorMsg = document.createElement('span');
-                errorMsg.className = 'error-message';
-                errorMsg.textContent = message;
-                field.parentNode.appendChild(errorMsg);
-            }
-        }
-
-        // Função para validar um passo específico e mostrar erros
-        function validateStep(step) {
-            const fields = requiredFieldsByStep[step] || [];
-            let isValid = true;
-            
-            // Limpa erros anteriores do passo
-            clearStepErrors(step);
-            
-            fields.forEach(fieldId => {
-                const field = document.getElementById(fieldId);
-                if (field) {
-                    let value = field.value.trim();
-                    
-                    // Para select, verifica se não é a opção vazia
-                    if (field.tagName === 'SELECT') {
-                        if (value === '' || value === null) {
-                            isValid = false;
-                            markFieldError(fieldId, 'Este campo é obrigatório');
-                        }
-                    } 
-                    // Para inputs normais
-                    else {
-                        if (value === '') {
-                            isValid = false;
-                            markFieldError(fieldId, 'Este campo é obrigatório');
-                        }
-                    }
-                }
-            });
-            
-            return isValid;
-        }
-
         // Função para atualizar o passo atual
         function updateStep(step) {
+            // Atualizar classes dos steps do progress bar
             steps.forEach((stepElement, index) => {
                 const stepNumber = index + 1;
                 stepElement.classList.remove('active', 'completed');
-
+                
                 if (stepNumber < step) {
                     stepElement.classList.add('completed');
                     stepElement.querySelector('.step-circle').textContent = '✓';
@@ -602,6 +469,7 @@
                 }
             });
 
+            // Atualizar visibilidade dos forms
             formSteps.forEach(formStep => {
                 const stepNum = parseInt(formStep.getAttribute('data-step'));
                 if (stepNum === step) {
@@ -611,9 +479,11 @@
                 }
             });
 
+            // Atualizar header
             headerTitle.textContent = stepConfig[step].title;
             headerSubtitle.textContent = stepConfig[step].subtitle;
 
+            // Atualizar botões
             if (step === 1) {
                 prevBtn.style.display = 'none';
             } else {
@@ -627,9 +497,55 @@
                 nextBtn.style.display = 'inline-block';
                 submitBtn.style.display = 'none';
             }
-            
-            // Limpar erros ao mudar de passo
-            clearStepErrors(step);
+        }
+
+        // Função para validar o passo atual
+        function validateStep(step) {
+            const currentFormStep = document.querySelector(`.form-step[data-step="${step}"]`);
+            const inputs = currentFormStep.querySelectorAll('input, select, textarea');
+            let isValid = true;
+
+            // Validação básica - campos obrigatórios
+            inputs.forEach(input => {
+                if (input.hasAttribute('required') || 
+                    (input.type !== 'checkbox' && input.value.trim() === '' && 
+                     input.id !== 'portfolio' && input.id !== 'bio')) {
+                    
+                    // Marcar campos vazios com borda vermelha
+                    if (input.value.trim() === '' && input.type !== 'checkbox') {
+                        input.style.borderColor = '#ff4444';
+                        isValid = false;
+                        
+                        // Remover borda vermelha após 2 segundos
+                        setTimeout(() => {
+                            input.style.borderColor = '#ccc';
+                        }, 2000);
+                    } else {
+                        input.style.borderColor = '#ccc';
+                    }
+                }
+            });
+
+            // Validação específica do passo 1 (CPF e Data)
+            if (step === 1) {
+                const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
+                if (cpf.length !== 11) {
+                    alert('Por favor, informe um CPF válido com 11 dígitos');
+                    isValid = false;
+                }
+            }
+
+            // Validação específica do passo 2 (Email)
+            if (step === 2) {
+                const email = document.getElementById('email').value;
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (email && !emailRegex.test(email)) {
+                    alert('Por favor, informe um e-mail válido');
+                    isValid = false;
+                }
+            }
+
+            return isValid;
         }
 
         // Avançar passo
@@ -655,17 +571,19 @@
             stepElement.addEventListener('click', () => {
                 const targetStep = index + 1;
                 if (targetStep < currentStep) {
+                    // Pode voltar sem validação
                     currentStep = targetStep;
                     updateStep(currentStep);
                 } else if (targetStep > currentStep) {
-                    let allPreviousValid = true;
+                    // Precisa validar os passos intermediários
+                    let canGo = true;
                     for (let i = currentStep; i < targetStep; i++) {
                         if (!validateStep(i)) {
-                            allPreviousValid = false;
+                            canGo = false;
                             break;
                         }
                     }
-                    if (allPreviousValid) {
+                    if (canGo) {
                         currentStep = targetStep;
                         updateStep(currentStep);
                     }
@@ -673,73 +591,49 @@
             });
         });
 
-        // Remover erro ao digitar nos campos
-        function setupFieldListeners() {
-            const allRequiredFieldIds = [
-                'nome', 'cpf_cnpj', 'area_atuacao', 
-                'email', 'whatsapp', 
-                'cidade', 'bairro', 
-                'titulo'
-            ];
-            
-            allRequiredFieldIds.forEach(fieldId => {
-                const field = document.getElementById(fieldId);
-                if (field) {
-                    field.addEventListener('input', function() {
-                        this.classList.remove('error');
-                        const errorMsg = this.parentNode.querySelector('.error-message');
-                        if (errorMsg) {
-                            errorMsg.remove();
-                        }
-                    });
-                    field.addEventListener('change', function() {
-                        this.classList.remove('error');
-                        const errorMsg = this.parentNode.querySelector('.error-message');
-                        if (errorMsg) {
-                            errorMsg.remove();
-                        }
-                    });
-                }
-            });
-        }
-
         // Event listeners
         nextBtn.addEventListener('click', nextStep);
         prevBtn.addEventListener('click', prevStep);
 
-        // ========== MÁSCARAS ==========
-        
-        // Máscara para CPF ou CNPJ
-        const cpfCnpjInput = document.getElementById('cpf_cnpj');
-        if (cpfCnpjInput) {
-            cpfCnpjInput.addEventListener('input', function(e) {
+        // Máscaras
+        const cpfInput = document.getElementById('cpf');
+        if(cpfInput) {
+            cpfInput.addEventListener('input', function(e) {
                 let value = e.target.value.replace(/\D/g, '');
-                
-                if (value.length <= 11) {
+                if(value.length <= 11) {
                     value = value.replace(/(\d{3})(\d)/, '$1.$2');
                     value = value.replace(/(\d{3})(\d)/, '$1.$2');
                     value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-                } else {
-                    value = value.replace(/^(\d{2})(\d)/, '$1.$2');
-                    value = value.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
-                    value = value.replace(/\.(\d{3})(\d)/, '.$1/$2');
-                    value = value.replace(/(\d{4})(\d)/, '$1-$2');
+                    e.target.value = value;
                 }
-                
-                e.target.value = value.substring(0, 18);
             });
         }
 
-        // Máscara para WhatsApp
+        const dateInput = document.getElementById('data_nascimento');
+        if(dateInput) {
+            dateInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if(value.length <= 8) {
+                    if(value.length > 2) {
+                        value = value.replace(/^(\d{2})(\d)/, '$1/$2');
+                    }
+                    if(value.length > 5) {
+                        value = value.replace(/(\d{2})(\d{4})$/, '$1/$2');
+                    }
+                    e.target.value = value;
+                }
+            });
+        }
+
         const whatsInput = document.getElementById('whatsapp');
-        if (whatsInput) {
+        if(whatsInput) {
             whatsInput.addEventListener('input', function(e) {
                 let value = e.target.value.replace(/\D/g, '');
-                if (value.length <= 11) {
-                    if (value.length > 2) {
+                if(value.length <= 11) {
+                    if(value.length > 2) {
                         value = value.replace(/^(\d{2})(\d)/, '($1) $2');
                     }
-                    if (value.length > 9) {
+                    if(value.length > 9) {
                         value = value.replace(/(\d{5})(\d{4})$/, '$1-$2');
                     }
                     e.target.value = value;
@@ -752,31 +646,15 @@
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Validar todos os passos
-            let allValid = true;
-            for (let i = 1; i <= totalSteps; i++) {
-                if (!validateStep(i)) {
-                    allValid = false;
-                    if (i < currentStep) {
-                        currentStep = i;
-                        updateStep(currentStep);
-                    }
-                    break;
-                }
-            }
-            
-            if (allValid) {
+            if (validateStep(currentStep)) {
+                // Aqui você pode enviar via AJAX ou apenas submeter o form
                 alert('Cadastro finalizado com sucesso!');
                 // form.submit(); // Descomente para enviar ao backend
             }
         });
 
-        // Inicializar listeners dos campos
-        setupFieldListeners();
-        
         // Inicializar
         updateStep(1);
     </script>
 </body>
-
 </html>
