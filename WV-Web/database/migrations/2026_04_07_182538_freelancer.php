@@ -29,7 +29,7 @@ return new class extends Migration
 
             // Perfil Profissional
             $table->string('profression_title')->nullable();
-            $table->string('skills')->nullable();
+            $table->string('skills')->nullable(); // Foreign key para uma tabela de habilidades, se necessário
             $table->string('portfolio_link')->nullable();
             $table->text('bio')->nullable();
 
