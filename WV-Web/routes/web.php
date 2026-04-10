@@ -8,10 +8,6 @@ Route::get('/', function () {
     return view('Screens.select');
 });
 
-Route::get('/registerFreelancer', function () {
-    return view('Auth.Register.freelancer');
-})->name('registerFreelancer');
-
-Route::get('/RegisterEmpress', function () {
-    return view ('Scree')
-))
+Route::get('/register/freelancer', function () {
+    return view('Screens.Auth.Register.RegisterFreelancers');
+});
