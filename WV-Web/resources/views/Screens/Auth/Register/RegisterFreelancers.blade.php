@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>WorkVale | Plataforma de Talentos</title>
+    <title>WorkVale | Cadastro de Freelancer</title>
     <!-- TailwindCSS CDN + Font Awesome -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -26,71 +26,57 @@
             --text-dark: #343A40;
             --text-gray: #6c757d;
             --white: #FFFFFF;
+            --border-color: #e5e7eb;
         }
 
-        /* Animações profissionais */
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        .job-card {
-            animation: slideIn 0.4s ease-out forwards;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .job-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(106, 38, 152, 0.12);
-        }
-
-        .bottom-nav-item {
+        .form-input,
+        .form-select,
+        .form-textarea {
             transition: all 0.2s ease;
-            position: relative;
+            border: 1px solid var(--border-color);
         }
 
-        .bottom-nav-item.active {
-            color: var(--primary-dark);
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-dark);
+            box-shadow: 0 0 0 3px rgba(106, 38, 152, 0.1);
         }
 
-        .bottom-nav-item.active::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 4px;
-            background-color: var(--primary-dark);
-            border-radius: 2px;
+        .category-chip {
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
         }
 
-        .bottom-nav-item:hover {
-            color: var(--primary-dark);
-            transform: translateY(-1px);
+        .category-chip:hover {
+            border-color: var(--primary-dark);
+            background: var(--primary-light);
+        }
+
+        .category-chip.selected {
+            background: var(--primary-dark);
+            color: white;
+            border-color: var(--primary-dark);
+        }
+
+        .step-indicator {
+            transition: all 0.3s ease;
+        }
+
+        .step-indicator.active {
+            background: var(--primary-dark);
+            color: white;
+        }
+
+        .step-indicator.completed {
+            background: var(--accent-green);
+            color: white;
         }
 
         .btn-primary {
             transition: all 0.2s ease;
-            position: relative;
-            overflow: hidden;
         }
 
         .btn-primary:hover {
@@ -102,343 +88,403 @@
             transform: translateY(0);
         }
 
-        .stat-card {
+        .btn-secondary {
             transition: all 0.2s ease;
         }
 
-        .stat-card:hover {
-            transform: translateY(-2px);
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .badge {
-            transition: all 0.2s ease;
-        }
-
-        .glass-nav {
-            backdrop-filter: blur(20px);
-            background: rgba(255, 255, 255, 0.98);
-            border: 1px solid rgba(106, 38, 152, 0.08);
-        }
-
-        /* Scrollbar personalizada */
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        ::-webkit-scrollbar-track {
+        .btn-secondary:hover {
             background: var(--primary-light);
+            transform: translateY(-1px);
         }
 
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary-dark);
-            border-radius: 2px;
+        .info-tooltip {
+            position: relative;
+            cursor: help;
+        }
+
+        .info-tooltip:hover::after {
+            content: attr(data-tip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text-dark);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            z-index: 10;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-section {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        /* Custom checkbox */
+        .checkbox-custom {
+            width: 1.125rem;
+            height: 1.125rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.25rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .checkbox-custom:checked {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
         }
     </style>
 </head>
 
-<body style="background: var(--bg-light); font-family: 'Inter', sans-serif;">
+<body style="background: linear-gradient(135deg, var(--bg-light) 0%, #f0eef3 100%); font-family: 'Inter', sans-serif;">
 
-    <div class="max-w-md mx-auto relative" style="min-height: 100vh;">
+    <div class="max-w-2xl mx-auto px-4 py-6 pb-24">
 
-        <!-- Header Profissional -->
-        <div
-            style="background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-medium) 100%); padding: 1.75rem 1.5rem 2rem 1.5rem;">
-
-            <div class="flex items-center justify-between mb-6">
-                <div>
-                    <h1 style="font-size: 1.75rem; font-weight: 700; letter-spacing: -0.5px; color: var(--white);">
-                        Work<span style="color: var(--accent-yellow);">Vale</span>
-                    </h1>
-                    <p style="font-size: 0.7rem; color: rgba(255,255,255,0.8); margin-top: 0.25rem;">Conectando
-                        talentos, impulsionando negócios.</p>
-                </div>
-                <div class="flex items-center gap-2">
-                    <div
-                        style="background: rgba(255,255,255,0.1); border-radius: 0.5rem; padding: 0.5rem; cursor: pointer; transition: all 0.2s;">
-                        <i class="far fa-bell" style="color: var(--white); font-size: 1.125rem;"></i>
-                    </div>
-                    <div
-                        style="background: var(--accent-yellow); border-radius: 0.5rem; padding: 0.5rem; cursor: pointer; transition: all 0.2s;">
-                        <i class="far fa-user-circle" style="color: var(--primary-dark); font-size: 1.125rem;"></i>
-                    </div>
-                </div>
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="inline-block">
+                <h1 class="text-3xl font-bold"
+                    style="background: linear-gradient(135deg, var(--primary-dark), var(--primary-medium)); -webkit-background-clip: text; background-clip: text; color: transparent;">
+                    Work<span style="color: var(--primary-dark);">Vale</span>
+                </h1>
             </div>
-
-            <!-- Saudação Profissional -->
-            <div class="mb-6">
-                <h2 style="font-size: 1.25rem; font-weight: 600; color: var(--white); margin-bottom: 0.25rem;">Olá,
-                    Maria</h2>
-                <p style="font-size: 0.75rem; color: rgba(255,255,255,0.7);">3 novos desafios disponíveis para você</p>
-            </div>
-
-            <!-- Cards de Métricas -->
-            <div class="grid grid-cols-3 gap-3">
-                <div class="stat-card"
-                    style="background: rgba(255,255,255,0.08); border-radius: 0.75rem; padding: 0.75rem; text-align: center;">
-                    <i class="fas fa-folder-open" style="color: var(--accent-yellow); font-size: 1rem;"></i>
-                    <p style="color: var(--white); font-size: 1.125rem; font-weight: 600; margin-top: 0.25rem;">12</p>
-                    <p style="color: rgba(255,255,255,0.7); font-size: 0.65rem;">Projetos</p>
-                </div>
-                <div class="stat-card"
-                    style="background: rgba(255,255,255,0.08); border-radius: 0.75rem; padding: 0.75rem; text-align: center;">
-                    <i class="fas fa-award" style="color: var(--accent-yellow); font-size: 1rem;"></i>
-                    <p style="color: var(--white); font-size: 1.125rem; font-weight: 600; margin-top: 0.25rem;">8</p>
-                    <p style="color: rgba(255,255,255,0.7); font-size: 0.65rem;">Conquistas</p>
-                </div>
-                <div class="stat-card"
-                    style="background: rgba(255,255,255,0.08); border-radius: 0.75rem; padding: 0.75rem; text-align: center;">
-                    <i class="fas fa-chart-line" style="color: var(--accent-yellow); font-size: 1rem;"></i>
-                    <p style="color: var(--white); font-size: 1.125rem; font-weight: 600; margin-top: 0.25rem;">R$ 4.8k
-                    </p>
-                    <p style="color: rgba(255,255,255,0.7); font-size: 0.65rem;">Ganhos</p>
-                </div>
-            </div>
+            <h2 class="text-xl font-semibold text-gray-800 mt-3">Cadastro de Freelancer</h2>
+            <p class="text-sm text-gray-500 mt-1">Preencha seus dados para criar seu perfil</p>
         </div>
 
-        <!-- Conteúdo Principal -->
-        <div style="padding: 1.5rem;">
+        <!-- Steps Indicator -->
+        <div class="flex justify-between items-center mb-8 max-w-md mx-auto">
+            <div
+                class="step-indicator active w-8 h-8 rounded-full bg-primary-dark text-white flex items-center justify-center text-sm font-semibold">
+                1</div>
+            <div class="flex-1 h-0.5 bg-gray-200 mx-2"></div>
+            <div
+                class="step-indicator w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center text-sm font-semibold">
+                2</div>
+            <div class="flex-1 h-0.5 bg-gray-200 mx-2"></div>
+            <div
+                class="step-indicator w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center text-sm font-semibold">
+                3</div>
+        </div>
 
-            <!-- Seção de Destaque -->
-            <div class="flex justify-between items-center mb-4">
-                <div>
-                    <h3 style="font-size: 1rem; font-weight: 600; color: var(--text-dark);">Desafios em Destaque</h3>
-                    <p style="font-size: 0.7rem; color: var(--text-gray); margin-top: 0.25rem;">Oportunidades de alto
-                        valor</p>
-                </div>
-                <span
-                    style="background: var(--primary-light); color: var(--primary-dark); padding: 0.25rem 0.75rem; border-radius: 0.375rem; font-size: 0.7rem; font-weight: 500;">3
-                    novos</span>
-            </div>
+        <form id="registerForm" class="space-y-8">
 
-            <div class="space-y-3">
-                <!-- Card 1 -->
-                <div class="job-card"
-                    style="background: var(--white); border-radius: 1rem; padding: 1.125rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid rgba(106, 38, 152, 0.08);">
-                    <div class="flex justify-between items-start mb-3">
-                        <div>
-                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                                <span
-                                    style="background: var(--accent-red); color: white; font-size: 0.65rem; padding: 0.2rem 0.6rem; border-radius: 0.25rem; font-weight: 500;">Prioridade</span>
-                                <span
-                                    style="background: var(--accent-green); color: white; font-size: 0.65rem; padding: 0.2rem 0.6rem; border-radius: 0.25rem;">Remoto</span>
-                            </div>
-                            <h4 style="font-weight: 700; color: var(--text-dark); font-size: 1.125rem;">Desenvolvedor
-                                Java</h4>
-                            <p style="font-size: 0.75rem; color: var(--text-gray); margin-top: 0.25rem;">
-                                <i class="fas fa-building" style="width: 1rem; margin-right: 0.25rem;"></i> Agência:
-                                Consulta SP
-                            </p>
-                        </div>
-                        <div style="background: var(--primary-light); padding: 0.25rem 0.6rem; border-radius: 0.5rem;">
-                            <i class="fas fa-key" style="color: var(--accent-yellow); font-size: 0.7rem;"></i>
-                            <i class="fas fa-key"
-                                style="color: var(--accent-yellow); font-size: 0.7rem; margin-left: 0.125rem;"></i>
-                            <span
-                                style="color: var(--primary-dark); font-size: 0.7rem; font-weight: 500; margin-left: 0.25rem;">Cores</span>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="flex items-center gap-1">
-                            <i class="fas fa-star" style="color: var(--accent-yellow); font-size: 0.7rem;"></i>
-                            <i class="fas fa-star" style="color: var(--accent-yellow); font-size: 0.7rem;"></i>
-                            <i class="fas fa-star" style="color: var(--accent-yellow); font-size: 0.7rem;"></i>
-                            <i class="fas fa-star" style="color: var(--accent-yellow); font-size: 0.7rem;"></i>
-                            <i class="fas fa-star-half-alt" style="color: var(--accent-yellow); font-size: 0.7rem;"></i>
-                            <span style="font-size: 0.7rem; color: var(--text-gray); margin-left: 0.25rem;">(48)</span>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <span style="color: var(--text-gray); font-size: 0.7rem;">Remuneração</span>
-                            <p style="color: var(--primary-dark); font-weight: 700; font-size: 1.25rem;">R$ 1.200</p>
-                        </div>
-                        <a href="#" class="btn-primary"
-                            style="background: var(--primary-dark); color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
-                            Ver detalhes <i class="fas fa-arrow-right" style="font-size: 0.7rem;"></i>
-                        </a>
-                    </div>
+            <!-- Seção 1: Dados Pessoais -->
+            <div class="form-section bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <div class="flex items-center gap-2 mb-5 pb-2 border-b border-gray-100">
+                    <i class="fas fa-user-circle" style="color: var(--primary-dark); font-size: 1.25rem;"></i>
+                    <h3 class="text-lg font-semibold text-gray-800">Dados Pessoais</h3>
                 </div>
 
-                <!-- Card 2 -->
-                <div class="job-card"
-                    style="background: var(--white); border-radius: 1rem; padding: 1.125rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid rgba(106, 38, 152, 0.08);">
-                    <div class="flex justify-between items-start mb-3">
-                        <div>
-                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                                <span
-                                    style="background: var(--accent-green); color: white; font-size: 0.65rem; padding: 0.2rem 0.6rem; border-radius: 0.25rem;">Alta
-                                    Demanda</span>
-                            </div>
-                            <h4 style="font-weight: 700; color: var(--text-dark); font-size: 1.125rem;">Desenvolvedor
-                                Java</h4>
-                            <p style="font-size: 0.75rem; color: var(--text-gray); margin-top: 0.25rem;">
-                                <i class="fas fa-building"></i> Agência: Consulta SP
-                            </p>
-                        </div>
-                        <div style="background: var(--primary-light); padding: 0.25rem 0.6rem; border-radius: 0.5rem;">
-                            <i class="fas fa-key" style="color: var(--accent-yellow);"></i>
-                            <i class="fas fa-key" style="color: var(--accent-yellow);"></i>
-                            <span style="color: var(--primary-dark); font-size: 0.7rem; font-weight: 500;">Cores</span>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <span style="color: var(--text-gray); font-size: 0.7rem;">Remuneração</span>
-                            <p style="color: var(--primary-dark); font-weight: 700; font-size: 1.25rem;">R$ 1.200</p>
-                        </div>
-                        <a href="#" class="btn-primary"
-                            style="background: var(--primary-dark); color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
-                            Ver detalhes <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Card 3 com destaque especial -->
-                <div class="job-card"
-                    style="background: linear-gradient(135deg, var(--white), #fef9f0); border-radius: 1rem; padding: 1.125rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid var(--accent-yellow);">
-                    <div class="flex justify-between items-start mb-3">
-                        <div>
-                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                                <span
-                                    style="background: var(--accent-yellow); color: var(--text-dark); font-size: 0.65rem; padding: 0.2rem 0.6rem; border-radius: 0.25rem; font-weight: 600;">Destaque</span>
-                            </div>
-                            <h4 style="font-weight: 700; color: var(--text-dark); font-size: 1.125rem;">Desenvolvedor
-                                Java Sênior</h4>
-                            <p style="font-size: 0.75rem; color: var(--text-gray); margin-top: 0.25rem;">
-                                <i class="fas fa-building"></i> Agência: Consulta SP
-                            </p>
-                        </div>
-                        <div style="background: var(--primary-light); padding: 0.25rem 0.6rem; border-radius: 0.5rem;">
-                            <i class="fas fa-diamond" style="color: var(--accent-yellow);"></i>
-                            <span
-                                style="color: var(--primary-dark); font-size: 0.7rem; font-weight: 500;">Premium</span>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <span style="color: var(--text-gray); font-size: 0.7rem;">Remuneração</span>
-                            <p style="color: var(--primary-dark); font-weight: 700; font-size: 1.25rem;">R$ 2.500</p>
-                        </div>
-                        <a href="#" class="btn-primary"
-                            style="background: var(--primary-dark); color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
-                            Ver detalhes <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Seção de Recomendações -->
-            <div class="mt-8">
-                <div class="flex justify-between items-center mb-4">
+                <div class="space-y-5">
                     <div>
-                        <h3 style="font-size: 1rem; font-weight: 600; color: var(--text-dark);">Recomendados para você
-                        </h3>
-                        <p style="font-size: 0.7rem; color: var(--text-gray);">Baseado no seu perfil</p>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Nome Completo <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" class="form-input w-full px-4 py-2.5 rounded-lg bg-gray-50 focus:bg-white"
+                            placeholder="Digite seu nome completo" required>
                     </div>
-                    <a href="#"
-                        style="color: var(--primary-dark); font-size: 0.75rem; font-weight: 500; text-decoration: none;">Ver
-                        todos →</a>
-                </div>
 
-                <div class="job-card"
-                    style="background: var(--white); border-radius: 1rem; padding: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; align-items: center; gap: 1rem;">
-                    <div
-                        style="background: linear-gradient(135deg, var(--primary-light), var(--primary-dark)); width: 48px; height: 48px; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-code" style="color: white; font-size: 1.25rem;"></i>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            CPF <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" class="form-input w-full px-4 py-2.5 rounded-lg bg-gray-50 focus:bg-white"
+                            placeholder="000.000.000-00" maxlength="14" required>
+                        <p class="text-xs text-gray-400 mt-1 flex items-center gap-1">
+                            <i class="fas fa-shield-alt"></i> Essencial para segurança e evitar perfis falsos
+                        </p>
                     </div>
-                    <div style="flex: 1;">
-                        <h4 style="font-weight: 600; color: var(--text-dark); font-size: 0.875rem;">Arquiteto de
-                            Software</h4>
-                        <p style="font-size: 0.7rem; color: var(--text-gray);">TechLead Corp • Remoto</p>
-                        <p
-                            style="color: var(--primary-dark); font-weight: 600; font-size: 0.875rem; margin-top: 0.25rem;">
-                            R$ 3.800</p>
-                    </div>
-                    <i class="fas fa-chevron-right" style="color: var(--primary-dark); font-size: 0.875rem;"></i>
-                </div>
 
-                <div class="job-card"
-                    style="background: var(--white); border-radius: 1rem; padding: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; align-items: center; gap: 1rem; margin-top: 0.75rem;">
-                    <div
-                        style="background: linear-gradient(135deg, var(--primary-light), var(--primary-dark)); width: 48px; height: 48px; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-mobile-alt" style="color: white; font-size: 1.25rem;"></i>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Data de Nascimento <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" class="form-input w-full px-4 py-2.5 rounded-lg bg-gray-50 focus:bg-white"
+                            placeholder="dd/mm/aaaa" required>
                     </div>
-                    <div style="flex: 1;">
-                        <h4 style="font-weight: 600; color: var(--text-dark); font-size: 0.875rem;">Desenvolvedor
-                            Mobile</h4>
-                        <p style="font-size: 0.7rem; color: var(--text-gray);">AppSolutions • Híbrido</p>
-                        <p
-                            style="color: var(--primary-dark); font-weight: 600; font-size: 0.875rem; margin-top: 0.25rem;">
-                            R$ 2.900</p>
-                    </div>
-                    <i class="fas fa-chevron-right" style="color: var(--primary-dark); font-size: 0.875rem;"></i>
                 </div>
             </div>
-        </div>
 
-        <!-- Bottom Navigation Profissional -->
-        <div class="glass-nav"
-            style="position: fixed; bottom: 1rem; left: 1rem; right: 1rem; max-width: 24rem; margin: 0 auto; border-radius: 1rem; box-shadow: 0 4px 16px rgba(0,0,0,0.08); padding: 0.5rem 1rem; display: flex; justify-content: space-around; align-items: center;">
-            <a href="#" class="bottom-nav-item active"
-                style="display: flex; flex-direction: column; align-items: center; text-decoration: none; color: var(--primary-dark);">
-                <i class="fas fa-home" style="font-size: 1.125rem;"></i>
-                <span style="font-size: 0.65rem; margin-top: 0.25rem; font-weight: 500;">Início</span>
-            </a>
-            <a href="#" class="bottom-nav-item"
-                style="display: flex; flex-direction: column; align-items: center; text-decoration: none; color: var(--text-gray);">
-                <i class="fas fa-chart-bar" style="font-size: 1.125rem;"></i>
-                <span style="font-size: 0.65rem; margin-top: 0.25rem;">Mural</span>
-            </a>
-            <a href="#" class="bottom-nav-item"
-                style="display: flex; flex-direction: column; align-items: center; text-decoration: none; color: var(--text-gray);">
-                <i class="fas fa-briefcase" style="font-size: 1.125rem;"></i>
-                <span style="font-size: 0.65rem; margin-top: 0.25rem;">Meus Jobs</span>
-            </a>
-            <a href="#" class="bottom-nav-item"
-                style="display: flex; flex-direction: column; align-items: center; text-decoration: none; color: var(--text-gray);">
-                <i class="fas fa-wallet" style="font-size: 1.125rem;"></i>
-                <span style="font-size: 0.65rem; margin-top: 0.25rem;">Carteira</span>
-            </a>
-        </div>
+            <!-- Seção 2: Contato -->
+            <div class="form-section bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <div class="flex items-center gap-2 mb-5 pb-2 border-b border-gray-100">
+                    <i class="fas fa-address-card" style="color: var(--primary-dark); font-size: 1.25rem;"></i>
+                    <h3 class="text-lg font-semibold text-gray-800">Contato</h3>
+                </div>
 
-        <div style="height: 5rem;"></div>
+                <div class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            E-mail <span class="text-red-500">*</span>
+                        </label>
+                        <input type="email" class="form-input w-full px-4 py-2.5 rounded-lg bg-gray-50 focus:bg-white"
+                            placeholder="seu@email.com" required>
+                        <p class="text-xs text-gray-400 mt-1">Será usado como login</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            WhatsApp <span class="text-red-500">*</span>
+                        </label>
+                        <input type="tel" class="form-input w-full px-4 py-2.5 rounded-lg bg-gray-50 focus:bg-white"
+                            placeholder="(13) 99999-9999" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção 3: Localização -->
+            <div class="form-section bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <div class="flex items-center gap-2 mb-5 pb-2 border-b border-gray-100">
+                    <i class="fas fa-map-marker-alt" style="color: var(--primary-dark); font-size: 1.25rem;"></i>
+                    <h3 class="text-lg font-semibold text-gray-800">Localização</h3>
+                </div>
+
+                <div class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Cidade <span class="text-red-500">*</span>
+                        </label>
+                        <select class="form-select w-full px-4 py-2.5 rounded-lg bg-gray-50 focus:bg-white">
+                            <option value="">Selecione sua cidade</option>
+                            <option>Registro</option>
+                            <option>Juquiá</option>
+                            <option>Miracatu</option>
+                            <option>Iguape</option>
+                            <option>Cananéia</option>
+                            <option>Ilha Comprida</option>
+                            <option>Jacupiranga</option>
+                            <option>Cajati</option>
+                            <option>Pariquera-Açu</option>
+                            <option>Eldorado</option>
+                        </select>
+                        <p class="text-xs text-gray-400 mt-1">25 municípios do Vale do Ribeira</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Bairro <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" class="form-input w-full px-4 py-2.5 rounded-lg bg-gray-50 focus:bg-white"
+                            placeholder="Digite seu bairro" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção 4: Perfil Profissional -->
+            <div class="form-section bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <div class="flex items-center gap-2 mb-5 pb-2 border-b border-gray-100">
+                    <i class="fas fa-briefcase" style="color: var(--primary-dark); font-size: 1.25rem;"></i>
+                    <h3 class="text-lg font-semibold text-gray-800">Perfil Profissional</h3>
+                </div>
+
+                <div class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Título Profissional <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" class="form-input w-full px-4 py-2.5 rounded-lg bg-gray-50 focus:bg-white"
+                            placeholder="Ex: Eletricista, Designer, Redator" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-3">
+                            Categorias de Atuação <span class="text-red-500">*</span>
+                        </label>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="category-chip px-3 py-1.5 rounded-full text-sm bg-gray-50"
+                                data-category="Manutenção">Manutenção</span>
+                            <span class="category-chip px-3 py-1.5 rounded-full text-sm bg-gray-50"
+                                data-category="TI">TI</span>
+                            <span class="category-chip px-3 py-1.5 rounded-full text-sm bg-gray-50"
+                                data-category="Eventos">Eventos</span>
+                            <span class="category-chip px-3 py-1.5 rounded-full text-sm bg-gray-50"
+                                data-category="Design">Design</span>
+                            <span class="category-chip px-3 py-1.5 rounded-full text-sm bg-gray-50"
+                                data-category="Marketing">Marketing</span>
+                            <span class="category-chip px-3 py-1.5 rounded-full text-sm bg-gray-50"
+                                data-category="Consultoria">Consultoria</span>
+                        </div>
+                        <input type="hidden" id="categories" name="categories">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Link de Portfólio ou LinkedIn
+                        </label>
+                        <input type="url"
+                            class="form-input w-full px-4 py-2.5 rounded-lg bg-gray-50 focus:bg-white"
+                            placeholder="https://seusite.com">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Breve Bio / Resumo de Experiência <span class="text-red-500">*</span>
+                        </label>
+                        <textarea rows="4" class="form-textarea w-full px-4 py-2.5 rounded-lg bg-gray-50 focus:bg-white resize-none"
+                            placeholder="Conte um pouco sobre sua experiência, habilidades e objetivos profissionais..." required></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Termos e Condições -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <div class="flex items-start gap-3">
+                    <input type="checkbox" id="terms" class="checkbox-custom mt-0.5" required>
+                    <label for="terms" class="text-sm text-gray-600">
+                        Concordo com os <a href="#" class="text-primary-dark font-medium">Termos de Uso</a> e <a
+                            href="#" class="text-primary-dark font-medium">Política de Privacidade</a>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Botões de Ação -->
+            <div class="flex gap-3 pt-4">
+                <button type="button"
+                    class="btn-secondary flex-1 px-6 py-3 rounded-xl border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition">
+                    Cancelar
+                </button>
+                <button type="submit" class="btn-primary flex-1 px-6 py-3 rounded-xl text-white font-medium"
+                    style="background: var(--primary-dark);">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    Criar Perfil
+                </button>
+            </div>
+        </form>
+
+        <!-- Footer -->
+        <div class="text-center mt-8">
+            <p class="text-xs text-gray-400">
+                © 2024 WorkVale - Conectando talentos, impulsionando negócios.
+            </p>
+        </div>
     </div>
 
     <script>
-        // Interatividade profissional
-        document.querySelectorAll('a[href="#"]').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                console.log('Navegação profissional');
+        // Máscara para CPF
+        const cpfInput = document.querySelector('input[placeholder="000.000.000-00"]');
+        if (cpfInput) {
+            cpfInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length <= 11) {
+                    value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                    value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                    value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+                    e.target.value = value;
+                }
+            });
+        }
+
+        // Máscara para WhatsApp
+        const whatsappInput = document.querySelector('input[placeholder="(13) 99999-9999"]');
+        if (whatsappInput) {
+            whatsappInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length <= 11) {
+                    value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
+                    value = value.replace(/(\d{5})(\d)/, '$1-$2');
+                    e.target.value = value;
+                }
+            });
+        }
+
+        // Máscara para Data
+        const dateInput = document.querySelector('input[placeholder="dd/mm/aaaa"]');
+        if (dateInput) {
+            dateInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length <= 8) {
+                    value = value.replace(/(\d{2})(\d)/, '$1/$2');
+                    value = value.replace(/(\d{2})(\d)/, '$1/$2');
+                    e.target.value = value;
+                }
+            });
+        }
+
+        // Categorias - seleção múltipla
+        const categories = document.querySelectorAll('.category-chip');
+        const categoriesHidden = document.getElementById('categories');
+        let selectedCategories = [];
+
+        categories.forEach(cat => {
+            cat.addEventListener('click', function() {
+                const categoryName = this.getAttribute('data-category');
+
+                if (this.classList.contains('selected')) {
+                    this.classList.remove('selected');
+                    selectedCategories = selectedCategories.filter(c => c !== categoryName);
+                } else {
+                    this.classList.add('selected');
+                    selectedCategories.push(categoryName);
+                }
+
+                categoriesHidden.value = selectedCategories.join(',');
             });
         });
 
-        // Navegação ativa
-        const navItems = document.querySelectorAll('.bottom-nav-item');
-        navItems.forEach(item => {
-            item.addEventListener('click', function(e) {
-                navItems.forEach(nav => {
-                    nav.classList.remove('active');
-                    nav.style.color = 'var(--text-gray)';
-                });
-                this.classList.add('active');
-                this.style.color = 'var(--primary-dark)';
+        // Submit do formulário
+        const form = document.getElementById('registerForm');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Validação simples
+            const requiredFields = form.querySelectorAll('[required]');
+            let isValid = true;
+
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.borderColor = 'var(--accent-red)';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = 'var(--border-color)';
+                }
             });
+
+            if (selectedCategories.length === 0) {
+                alert('Selecione pelo menos uma categoria de atuação');
+                isValid = false;
+            }
+
+            if (!document.getElementById('terms').checked) {
+                alert('Você precisa concordar com os Termos de Uso');
+                isValid = false;
+            }
+
+            if (isValid) {
+                // Simular envio
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Criando perfil...';
+                submitBtn.disabled = true;
+
+                setTimeout(() => {
+                    alert('Perfil criado com sucesso! Redirecionando...');
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    // window.location.href = '/dashboard';
+                }, 1500);
+            }
         });
 
-        // Efeito hover nos cards
-        const cards = document.querySelectorAll('.job-card');
-        cards.forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-2px)';
-            });
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
+        // Remover erro ao digitar
+        const inputs = document.querySelectorAll('input, textarea, select');
+        inputs.forEach(input => {
+            input.addEventListener('input', function() {
+                this.style.borderColor = 'var(--border-color)';
             });
         });
     </script>

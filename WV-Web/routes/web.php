@@ -4,14 +4,9 @@ use App\Http\Controllers\AuthControlle;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\View;
 
-Route::get('/', function () {
-    return view('Screens.select');
-});
+// Controllers
+use App\Http\Controllers\AuthController;
 
-Route::get('/registerFreelancer', function () {
-    return view('Auth.Register.freelancer');
-})->name('registerFreelancer');
-
-Route::get('/RegisterEmpress', function () {
-    return view ('Scree')
-))
+// Routes
+Route::get('/', [AuthController::class, 'showLoginScreen'])->name('login');
+Route::get('/register/Freelancer', [AuthController::class, 'showRegisterFreelancerScreen'])->name('register.freelancer');

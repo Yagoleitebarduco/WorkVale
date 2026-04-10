@@ -14,14 +14,15 @@ return new class extends Migration
         Schema::create('freelancers', function (Blueprint $table) {
             $table->id();
             $table->boolean('is_admin')->default(false);
+
             // Informações Pessoais
             $table->string('complete_name');
-            $table->string('cpf')->unique();
+            $table->integer('cpf')->unique();
             $table->date('birth_date');
 
             // Contato
             $table->string('email')->unique();
-            $table->string('phone_number')->unique();
+            $table->integer('phone_number')->unique();
 
             // Localização
             $table->string('city');
