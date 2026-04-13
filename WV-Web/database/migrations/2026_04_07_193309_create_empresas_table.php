@@ -13,11 +13,6 @@ return new class extends Migration
     {
         Schema::create('empresas', function (Blueprint $table) {
             $table->id();
-            
-            // Dados do Negócio
-            $table->string('razao_social', 255);
-            $table->string('nome_fantasia', 255)->nullable();
-            $table->string('cnpj_cpf', 18)->unique(); // Formato: 00.000.000/0001-00 ou 000.000.000-00
             $table->string('area_atuacao', 100);
             
             // Contato Responsável

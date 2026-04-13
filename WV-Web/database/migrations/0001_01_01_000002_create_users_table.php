@@ -13,8 +13,31 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->boolean('is_admin')->default(false);
+            $table->boolean('is_freelancer')->default(true);
+            
+            // Dados Pessoais ou de Empressas
+            $table->string('profile_picture')->nullable();
+            $table->string('social_reason')->nullable(); // Para empresas
             $table->string('name');
+            $table->integer('cnpj_cpf')->unique();
+            $table->date('birth_date');
+
+            // Contato
             $table->string('email')->unique();
+            $table->integer('phone_number')->unique();
+
+            // Localização
+            $table->foreignId('city_id')->constrained()->onDelete('cascade');
+            $table->string('address');
+
+            // Perfil Profissional
+            $table->string('professional_title');
+            // Pesar em forma de criar
+            // $table->foreign('skils_id')->constrained('skils')->onDelete('cascade');
+            $table->string('portfolio_link')->nullable();
+            $table->text('bio')->nullable();
+
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
