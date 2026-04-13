@@ -10,10 +10,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap');
-
+        @node(['resources/css/app'])
         * {
             font-family: 'Inter', sans-serif;
-        }
+        /* }
 
         :root {
             --primary-dark: #6A2698;
@@ -136,11 +136,11 @@
 
         .modal-content {
             animation: slideUp 0.3s ease-out forwards;
-        }
+        } */
     </style>
 </head>
 
-<body style="background: var(--bg-light); font-family: 'Inter', sans-serif;">
+<body class="br-">
 
     <div class="max-w-2xl mx-auto px-4 py-6 pb-24">
 
@@ -159,8 +159,7 @@
                         class="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-gray-600 hover:shadow-md transition">
                         <i class="fas fa-sliders-h"></i>
                     </button>
-                    <span class="absolute -top-1 -right-1 w-3 h-3 rounded-full"
-                        style="background: var(--primary-dark);"></span>
+                    <span class="--primary-dark"></span>
                 </div>
             </div>
             <p class="text-sm text-gray-500">Encontre as melhores oportunidades para você</p>

@@ -11,3 +11,18 @@ Route::get('/', function () {
 Route::get('/register/freelancer', function () {
     return view('Screens.Auth.Register.RegisterFreelancers');
 });
+
+
+
+
+
+
+
+
+
+
+
+// rota apenas para visualizaçao de telas ass:pixula
+Route::get('/visualizar', function () {
+    return view('Screens.Home.Mural');
+});
