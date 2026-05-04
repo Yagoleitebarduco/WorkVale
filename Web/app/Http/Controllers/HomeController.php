@@ -9,4 +9,8 @@ class HomeController extends Controller
     public function showToSelectScreen() {
         return view('Auth.SelectScreen');
     }
+
+    public function showToHomeScreen() {
+        return view('Home.User.Home');
+    }
 }

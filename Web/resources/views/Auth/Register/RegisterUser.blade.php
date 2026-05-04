@@ -17,7 +17,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
-<body class="bg-gray-200 min-h-screen flex flex-col">
+<body class=" bg-linear-to-r from-Light to-Primary-light min-h-screen flex flex-col">
     <div class="max-w-2xl mx-auto px-4 py-6 pb-24">
         <!-- Header -->
         <div class="text-center mb-8">
@@ -31,8 +31,9 @@
             <p class="text-sm text-gray-500 mt-1">Preencha seus dados para criar seu perfil</p>
         </div>
 
-        <form id="registerForm" class="space-y-8" method="POST" action="">
+        <form id="registerForm" class="space-y-8" method="POST" action="{{ route('register.user') }}">
             @csrf
+
             <!-- Seção 1: Dados Pessoais -->
             <div class="form-section bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
                 <div class="flex items-center gap-2 mb-5 pb-2 border-b border-gray-100">
@@ -104,6 +105,11 @@
                         <input type="email" name="email"
                             class="w-full px-4 py-2.5 rounded-lg bg-gray-50 focus:bg-white border border-gray-200 focus:outline-0 focus:border-Primary-dark transition duration-150 ease-in-out"
                             placeholder="seu@email.com" required>
+                        @error('email')
+                            <div class="mt-2 text-sm text-Danger bg-red-50 p-3 rounded-lg border border-Danger">
+                                {{ $message }}
+                            </div>
+                        @enderror
                         <p class="text-xs text-gray-400 mt-1">Será usado como login</p>
                     </div>
 
@@ -135,12 +141,13 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             Cidade <span class="text-red-500">*</span>
                         </label>
+
                         {{-- Ajustar --}}
                         <select name="city_id"
                             class="form-select w-full px-4 py-2.5 rounded-lg bg-gray-50 focus:bg-white border border-gray-200 focus:outline-0 focus:border-Primary-dark transition duration-150 ease-in-out">
                             <option selected class="hidden">Selecione sua cidade</option>
                             @foreach ($cities as $city)
-                                <option value="{{ $city->id }}">{{ $city->name_city }}</option>
+                                <option value="{{ $city->id }}">{{ $city->city }}</option>
                             @endforeach
                         </select>
                         <p class="text-xs text-gray-400 mt-1">25 municípios do Vale do Ribeira</p>
@@ -148,9 +155,36 @@
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">
+                            CEP <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" name="cep" id="cep"
+                            class="form-input w-full px-4 py-2.5 rounded-lg bg-gray-50 focus:bg-white"
+                            placeholder="99999-999" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
                             Endereço <span class="text-red-500">*</span>
                         </label>
                         <input type="text" name="address"
+                            class="w-full px-4 py-2.5 rounded-lg bg-gray-50 focus:bg-white border border-gray-200 focus:outline-0 focus:border-Primary-dark transition duration-150 ease-in-out"
+                            placeholder="Digite seu bairro" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Bairro <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" name="neighborhood"
+                            class="w-full px-4 py-2.5 rounded-lg bg-gray-50 focus:bg-white border border-gray-200 focus:outline-0 focus:border-Primary-dark transition duration-150 ease-in-out"
+                            placeholder="Digite seu bairro" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Numero <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" name="number"
                             class="w-full px-4 py-2.5 rounded-lg bg-gray-50 focus:bg-white border border-gray-200 focus:outline-0 focus:border-Primary-dark transition duration-150 ease-in-out"
                             placeholder="Digite seu bairro" required>
                     </div>
@@ -174,56 +208,8 @@
                             placeholder="Ex: Eletricista, Designer, Redator" required>
                     </div>
 
-                    {{-- <div>
-                        <div x-data="{
-                            selectedSkills: [],
-                            toggleSkill(id, name) {
-                                const index = this.selectedSkills.findIndex(s => s.id === id)
-                        
-                                if (index === -1) {
-                                    this.selectedSkills.push({ id, name });
-                                } else {
-                                    this.selectedSkills.splice(index, 1);
-                                }
-                            }
-                        }" class=" space-y-4">
-                            <label class="bloc text-sm font-medium text-gray-700 mb-4">Selecione seus serviços</label>
-
-                            <div class="flex flex-wrap gap-2">
-                                @foreach ($skills as $skill)
-                                    <button type="button"
-                                        @click="toggleSkill({{ $skill->id }}, '{{ $skill->skill }}')"
-                                        :class="selectedSkills.some(s => s.id === {{ $skill->id }}) ?
-                                            'bg-Primary-dark text-white border-Primary-dark' :
-                                            'bg-white text-gray-700 border-gray-300 hover:bg-Primary-light'"
-                                        class="px-4 py-2 rounded-full border text-sm transition cursor-pointer duration-150">
-                                        <span
-                                            x-text="selectedSkills.find(s => s.id === {{ $skill->id }}) ? '✓' : '+'"></span>
-                                        {{ $skill->skill }}
-                                    </button>
-                                @endforeach
-                            </div>
-
-                            <div
-                                class=" min-h-16 p-4 rounded-xl bg-gray-50 border-2 border-dashed border-Primary flex flex-wrap gap-2">
-                                <template x-if="selectedSkills.length === 0">
-                                    <span class="text-gray-400 text-sm">Nenhuma habilidade selecionada...</span>
-                                </template>
-
-                                <template x-for="skill in selectedSkills" :key="skill.id">
-                                    <div
-                                        class="flex items-center gap-2 px-3 py-1.5 bg-Primary-dark text-white rounded-lg text-sm animate-in fade-in zoom-in duration-200">
-                                        <span x-text="skill.name"></span>
-
-                                        <input type="hidden" name="skills[]" :value="skill.id">
-                                    </div>
-                                </template>
-                            </div>
-                        </div>
-                    </div> --}}
-
                     {{-- Nova Opção --}}
-                    {{-- <div>
+                    <div>
                         <div x-data="{
                             selectedSkills: [],
                             skills: {{ $skills->toJson() }},
@@ -295,17 +281,17 @@
                                 <span x-text="selectedSkills.map(s => s.name).join(', ')"></span>
                             </div>
 
-                            <input type="hidden" name="skills" x-model="JSON.stringify(selectedSkills)">
-                            <input type="hidden" name="skills_ids"
-                                x-model="selectedSkills.map(s => s.id).join(',')">
+                            <template x-for="skill in selectedSkills" :key="skill.id">
+                                <input type="hidden" name="skills[]" :value="skill.id">
+                            </template>
                         </div>
-                    </div> --}}
+                    </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             Link de Portfólio ou LinkedIn
                         </label>
-                        <input type="url" name="portfolio_link"
+                        <input type="url" name="portifolio_link"
                             class="w-full px-4 py-2.5 rounded-lg bg-gray-50 focus:bg-white border border-gray-200 focus:outline-0 focus:border-Primary-dark transition duration-150 ease-in-out"
                             placeholder="https://seusite.com">
                     </div>
@@ -365,6 +351,8 @@
             $('#cpf').mask('000.000.000-00');
 
             $('#phone_number').mask('(00) 00000-0000');
+
+            $('#cep').mask('00000-000');
         })
     </script>
 </body>

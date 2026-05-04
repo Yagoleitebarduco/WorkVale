@@ -103,7 +103,7 @@
                     </div>
 
                     <div class="flex mt-8 text-center">
-                        <a href="#"
+                        <a href="{{ route('register.company') }}"
                             class="p-3 w-full rounded-xl bg-Primary-light text-sm font-medium text-Primary-dark cursor-pointer">
                             Cadastre-se
                         </a>

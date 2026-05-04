@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('neighborhood');
             $table->string('number');
+            $table->string('cep');
             $table->foreignId('city_id')->constrained()->onDelete('cascade');
 
             // Perfil Profisional
@@ -52,7 +53,7 @@ return new class extends Migration
             $table->string('company_name');
             $table->text('description');
             $table->string('cpf_cnpj')->unique();
-            $table->string('area_operation');
+            $table->foreignId('areaActivies_id')->constrained('area_activies')->onDelete('cascade');
             $table->string('assessment')->nullable();
 
             // Dados do representante da empressa
@@ -64,6 +65,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('neighborhood');
             $table->string('number');
+            $table->string('cep');
             $table->foreignId('city_id')->constrained()->onDelete('cascade');
 
             // Segurança
