@@ -9,6 +9,7 @@ use App\Http\Controllers\RegisterCompanyController;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MuralController;
 use App\Http\Controllers\NewWorkController;
 
 // Controller - Fim
@@ -32,14 +33,16 @@ Route::post('/register/company', [RegisterCompanyController::class, 'storeCompan
 
 // Rotas Protegidas para os freelancres
 Route::middleware('auth:web')->group(function () {
-    Route::get('\home', [HomeController::class, 'showToHomeScreen'])->name('user.home');
+    Route::get('/home', [HomeController::class, 'showToHomeScreen'])->name('user.home');
+
+    Route::get('/mural', [MuralController::class, 'showToMuralScreen'])->name('user.mural');
 });
 
 // Rotas Protegidas para as empresas
 Route::middleware('auth:company')->group(function () {
-    Route::get('\dashboard', [DashboardController::class, 'showToDashboardScreen'])->name('company.dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'showToDashboardScreen'])->name('company.dashboard');
 
     // Rotas para tela de criação de trabalhos
-    Route::get('\newwork', [NewWorkController::class, 'showToNewWorkScreen'])->name('company.newwork');
-    Route::post('\newwork', [NewWorkController::class, 'store']);
+    Route::get('/newwork', [NewWorkController::class, 'showToNewWorkScreen'])->name('company.newwork');
+    Route::post('/newwork', [NewWorkController::class, 'store']);
 });

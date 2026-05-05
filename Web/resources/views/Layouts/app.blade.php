@@ -44,9 +44,9 @@
             @endif
 
             @if (Auth::guard('web')->check())
-                <a href="{{ route('user.home') }}"
-                    class="flex flex-col items-center decoration-0  {{ request()->routeIs('user.home') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
-                    <i class="fas fa-home text-lg"></i>
+                <a href="{{ route('user.mural') }}"
+                    class="flex flex-col items-center decoration-0  {{ request()->routeIs('user.mural') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
+                    <i class="fas fa-chart-bar text-lg"></i>
                     <span class=" text-xs mt-1">Mural</span>
                 </a>
             @elseif (Auth::guard('company')->check())

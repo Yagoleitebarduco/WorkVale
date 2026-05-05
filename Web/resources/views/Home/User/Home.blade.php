@@ -176,8 +176,6 @@
                                     <div class="flex items-center gap-3 text-xs text-gray-500 mt-1">
                                         <span><i class="fas fa-map-marker-alt mr-1 text-Primary-dark"></i>
                                             {{ $work->company->city->city }}, {{ $work->company->city->uf }}</span>
-                                        <span><i class="far fa-clock mr-1 text-Primary-dark"></i> Criada em
-                                            2020</span>
                                     </div>
                                 </div>
                             </div>
@@ -190,10 +188,7 @@
                                 </h3>
 
                                 <p class="text-gray-600 leading-relaxed">
-                                    Precisamos de um designer gráfico para criar a identidade visual de uma nova marca
-                                    de produtos
-                                    orgânicos do Vale do Ribeira.
-                                    O trabalho inclui logo, cartão de visita, papel timbrado e posts para redes sociais.
+                                    {{ $work->description_work }}
                                 </p>
                             </div>
 
@@ -204,23 +199,14 @@
                                     Requisitos
                                 </h3>
                                 <div class="flex flex-wrap gap-2">
-                                    <span
-                                        class="px-3 py-1.5 rounded-full text-sm font-medium bg-Primary-light text-Primary-dark border border-Primary-dark">
-                                        <i class="fas fa-paintbrush mr-1"></i> Photoshop
-                                    </span>
-
-                                    <span
-                                        class="px-3 py-1.5 rounded-full text-sm font-medium bg-Primary-light text-Primary-dark border border-Primary-dark">
-                                        <i class="fas fa-draw-polygon mr-1"></i> Ilustrador
-                                    </span>
-                                    <span
-                                        class="px-3 py-1.5 rounded-full text-sm font-medium bg-Primary-light text-Primary-dark border border-Primary-dark">
-                                        <i class="fas fa-trademark mr-1"></i> Branding
-                                    </span>
-                                    <span
-                                        class="px-3 py-1.5 rounded-full text-sm font-medium bg-Primary-light text-Primary-dark border border-Primary-dark">
-                                        <i class="fas fa-mobile-alt mr-1"></i> UI/UX
-                                    </span>
+                                    @forelse ($work->skills as $skill)
+                                        <span
+                                            class="px-3 py-1.5 rounded-full text-sm font-medium bg-Primary-light text-Primary-dark border border-Primary-dark">
+                                            <i class="fas fa-paintbrush mr-1"></i> {{ $skill->skill }}
+                                        </span>
+                                    @empty
+                                        <span class="text-gray-400">Nenhuma skill listada.</span>
+                                    @endforelse
                                 </div>
                             </div>
 
@@ -237,7 +223,7 @@
                                             <i class="fas fa-building text-Primary-dark"></i>
                                             <span class="text-xs text-gray-500">Empresa</span>
                                         </div>
-                                        <p class="font-medium text-gray-800">Agência Criativa SP</p>
+                                        <p class="font-medium text-gray-800">{{ $work->company->company_name }}</p>
                                     </div>
 
                                     <div class="info-card p-3 rounded-xl bg-gray-100">
@@ -245,7 +231,7 @@
                                             <i class="fas fa-map-marker-alt text-Primary-dark"></i>
                                             <span class="text-xs text-gray-500">Localização</span>
                                         </div>
-                                        <p class="font-medium text-gray-800">Registro, SP</p>
+                                        <p class="font-medium text-gray-800">{{ $work->company->city->city }}, {{ $work->company->city->uf }}</p>
                                     </div>
 
                                     <div class="info-card p-3 rounded-xl bg-gray-100">
@@ -261,14 +247,14 @@
                                             <i class="fas fa-calendar-alt text-Primary-dark"></i>
                                             <span class="text-xs text-gray-500">Prazo</span>
                                         </div>
-                                        <p class="font-medium text-gray-800">3 dias</p>
+                                        <p class="font-medium text-gray-800">{{ $work->duration }}</p>
                                     </div>
                                     <div class="info-card p-3 rounded-xl bg-gray-100">
                                         <div class="flex items-center gap-2 mb-1">
                                             <i class="fas fa-tag text-Success"></i>
                                             <span class="text-xs text-gray-500">Valor</span>
                                         </div>
-                                        <p class="text-xl font-bold">R$ 1.200</p>
+                                        <p class="text-xl font-bold">R$ {{ $work->payment }}</p>
                                     </div>
 
                                     <div class="info-card p-3 rounded-xl bg-gray-100">
@@ -276,7 +262,7 @@
                                             <i class="fas fa-briefcase text-Primary-dark"></i>
                                             <span class="text-xs text-gray-500">Tipo</span>
                                         </div>
-                                        <p class="font-medium text-gray-800">Freelancer</p>
+                                        <p class="font-medium text-gray-800 font">{{ $work->type_work }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -288,8 +274,7 @@
                                     <h4 class="font-semibold text-gray-800">Sobre a Empresa</h4>
                                 </div>
                                 <p class="text-sm text-gray-600 mb-2">
-                                    Empresa especializada em branding e design com mais de 5 anos de mercado.
-                                    Já atendeu mais de 200 clientes em todo o Brasil.
+                                    {{ $work->company->description }}
                                 </p>
                                 <div class="flex items-center gap-4 text-xs">
                                     <span><i class="fas fa-check-circle" style="color: var(--accent-green);"></i>
