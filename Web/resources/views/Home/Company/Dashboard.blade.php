@@ -66,21 +66,60 @@
 
 @section('content')
     <!-- Conteúdo Principal -->
-    <div class="dashboard-content px-4 pb-20">
+    <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-6">
+    <div class="flex justify-between items-center mb-3">
+        <div>
+            <h3 class="font-semibold text-gray-800 text-sm">Contratações por Mês</h3>
+            <p class="text-xs text-gray-400">Últimos 6 meses</p>
+        </div>
+        <select id="anoSelect" class="text-xs border border-gray-200 rounded-lg px-2 py-1 bg-white">
+            <option value="2024">2024</option>
+            <option value="2023">2023</option>
+        </select>
+    </div>
+    <canvas id="hiringChart" height="180"></canvas>
+</div>
 
-        <!-- Gráfico de Contratações por Mês -->
-        <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-6">
-            <div class="flex justify-between items-center mb-3">
-                <div>
-                    <h3 class="font-semibold text-gray-800 text-sm">Contratações por Mês</h3>
-                    <p class="text-xs text-gray-400">Últimos 6 meses</p>
-                </div>
-                <select id="anoSelect" class="text-xs border border-gray-200 rounded-lg px-2 py-1 bg-white">
-                    <option value="2024">2024</option>
-                    <option value="2023">2023</option>
-                </select>
-            </div>
-            <canvas id="hiringChart" height="180"></canvas>
+<!-- Script simples -->
+<script>
+// Dados
+const dados = {
+    2024: [5, 8, 12, 7, 15, 10],
+    2023: [3, 6, 9, 4, 11, 8]
+};
+
+// Criar gráfico
+const ctx = document.getElementById('hiringChart').getContext('2d');
+let meuGrafico = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+        datasets: [{
+            label: 'Contratações',
+            data: dados[2024],
+            borderColor: '#6A2698',
+            backgroundColor: 'rgba(106, 38, 152, 0.1)',
+            borderWidth: 2,
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: { stepSize: 1 }
+            }
+        }
+    }
+});
+
+// Mudar ano
+document.getElementById('anoSelect').addEventListener('change', function(e) {
+    meuGrafico.data.datasets[0].data = dados[e.target.value];
+    meuGrafico.update();
+});
+</script>
         </div>
 
         <!-- Vagas Recentes -->
