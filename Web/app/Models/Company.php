@@ -33,7 +33,12 @@ class Company extends Authenticatable
         'password',
     ];
 
-    protected $hidden = ['password', 'remeber_token'];
+    protected function casts(): array
+    {
+        return [
+            'password' => 'hashed',
+        ];
+    }
 
     public function city() {
         return $this->belongsTo(City::class);

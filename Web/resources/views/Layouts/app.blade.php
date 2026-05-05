@@ -29,25 +29,41 @@
         <!-- Bottom Navigation Profissional -->
         <div
             class=" fixed bottom-4 left-4 right-4 max-w-sm mx-auto rounded-full shadow-lg p-2 flex justify-around items-center border border-Dark bg-white/8 backdrop-blur-xl">
-            <a href="{{ route('home') }}"
-                class="flex flex-col items-center decoration-0  {{ request()->routeIs('home') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
-                <i class="fas fa-home text-lg"></i>
-                <span class=" text-xs mt-1">Início</span>
-            </a>
+            @if (Auth::guard('web')->check())
+                <a href="{{ route('user.home') }}"
+                    class="flex flex-col items-center decoration-0  {{ request()->routeIs('user.home') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
+                    <i class="fas fa-home text-lg"></i>
+                    <span class=" text-xs mt-1">Início</span>
+                </a>
+            @elseif (Auth::guard('company')->check())
+                <a href="{{ route('company.dashboard') }}"
+                    class="flex flex-col items-center decoration-0  {{ request()->routeIs('company.dashboard') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
+                    <i class="fas fa-home text-lg"></i>
+                    <span class=" text-xs mt-1">Dashboard</span>
+                </a>
+            @endif
 
-            <a href="{{ route('mural') }}"
-                class="flex flex-col items-center decoration-0 {{ request()->routeIs('mural') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
-                <i class="fas fa-chart-bar text-lg"></i>
-                <span class=" text-xs mt-1">Mural</span>
-            </a>
+            @if (Auth::guard('web')->check())
+                <a href="{{ route('user.home') }}"
+                    class="flex flex-col items-center decoration-0  {{ request()->routeIs('user.home') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
+                    <i class="fas fa-home text-lg"></i>
+                    <span class=" text-xs mt-1">Mural</span>
+                </a>
+            @elseif (Auth::guard('company')->check())
+                <a href="{{ route('company.newwork') }}"
+                    class="flex flex-col items-center decoration-0  {{ request()->routeIs('company.newwork') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
+                    <i class="fas fa-plus text-lg"></i>
+                    <span class=" text-xs mt-1">New Work</span>
+                </a>
+            @endif
 
-            <a href="{{ route('myjobs') }}"
+            <a href="#"
                 class="flex flex-col items-center decoration-0 {{ request()->routeIs('myjobs') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
                 <i class="fas fa-briefcase text-lg"></i>
                 <span class=" text-xs mt-1">Meus Jobs</span>
             </a>
 
-            <a href="{{ route('walet') }}"
+            <a href="#"
                 class="flex flex-col items-center decoration-0 {{ request()->routeIs('walet') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
                 <i class="fas fa-wallet text-lg"></i>
                 <span class=" text-xs mt-1">Carteira</span>

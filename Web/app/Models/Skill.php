@@ -15,7 +15,11 @@ class Skill extends Model
         'category',
     ];
 
-    public function users() {
+    public function user() {
         return $this->belongsToMany(User::class, 'skill_user');
+    }
+
+    public function work() {
+        return $this->belongsToMany(Work::class, 'skill_work');
     }
 }

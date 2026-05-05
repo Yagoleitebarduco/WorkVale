@@ -19,7 +19,31 @@ class LoginController extends Controller
 
         if (Auth::guard('web')->attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect();
+            return redirect()->route('user.home');
         }
+
+        if (Auth::guard('company')->attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->route('company.dashboard');
+        }
+
+        return back()->withErrors([
+            'email' => 'E-mail ou senha invalidos',
+        ])->onlyInput('email');
+    }
+
+    public function logout(Request $request) {
+        if (Auth::guard('web')->check()) {
+            Auth::guard('web')->logout();
+        }
+
+        if (Auth::guard('company')->check()) {
+            Auth::guard('company')->logout();
+        }
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
     }
 }

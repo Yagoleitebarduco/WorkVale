@@ -28,6 +28,13 @@
         <p class="text-xs text-gray-200">Empresa {{ Auth::user()->company_name }}</p>
     </div>
 
+    <div class="mt-2 mb-2">
+        <form action="{{ route('logout') }}" method="post">
+            @csrf
+            <button type="submit" class="bg-gray-200 py-2 px-4 rounded-2xl cursor-pointer">Sair</button>
+        </form>
+    </div>
+
     <!-- Stats Cards (3 cards) -->
     <div class="grid grid-cols-3 gap-3 mb-6">
         <div class="stat-card bg-white rounded-xl p-3 text-center shadow-sm border border-gray-100">
@@ -90,8 +97,23 @@
                 </div>
 
             </div>
+
             <div class="divide-y divide-gray-100">
-                {{-- @forelse($vagasRecentes ?? [] as $vaga)
+                @forelse ($works as $work)
+                    <div class="recent-item p-3 flex items-center justify-between">
+                        <div>
+                            <h4 class="font-medium text-gray-800 text-sm">{{ $work->name_work }}</h4>
+                            <p class="text-xs text-gray-400 mt-0.5">
+                                candidatos • há {{ $work->duration }} dias</p>
+                        </div>
+                    </div>
+                @empty
+                    <div class="p-4 text-center text-gray-500 text-sm">
+                        Nenhuma vaga recente encontrada
+                    </div>
+                @endforelse
+
+                {{-- @foreach ($works as $work)
                     <div class="recent-item p-3 flex items-center justify-between">
                         <div>
                             <h4 class="font-medium text-gray-800 text-sm">{{ $vaga['titulo'] }}</h4>
@@ -102,15 +124,13 @@
                             {{ $vaga['status_texto'] }}
                         </span>
                     </div>
-                @empty
-                    <div class="p-4 text-center text-gray-500 text-sm">
-                        Nenhuma vaga recente encontrada
-                    </div>
-                @endforelse --}}
+                    @empty
+                        
+                    @endforeach --}}
             </div>
 
             <div class="p-3 border-t border-gray-100">
-                <a id="novaVagaBtn"
+                <a href="{{ route('company.newwork') }}"
                     class="flex justify-center items-center py-2 rounded-lg text-sm font-medium transition bg-Primary-light cursor-pointer">
                     <i class="fas fa-plus mr-2"></i> Nova Vaga
                 </a>
@@ -176,94 +196,6 @@
                     @endforelse
                 </div>
             </div>
-        </div>
-    </div>
-    <div id="settingsModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
-        <div class="relative bg-white rounded-2xl max-w-sm w-full p-5 mx-4 shadow-2xl"
-            style="animation: fadeInUp 0.2s ease-out;">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold text-gray-800">Configurações</h3>
-                <button id="closeSettingsBtn" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
-                    <i class="fas fa-times text-gray-500"></i>
-                </button>
-            </div>
-
-            <form id="settingsForm" method="POST" action="{{ route('empresa.configuracoes.atualizar') }}">
-                @csrf
-                @method('PUT')
-
-                <div class="space-y-3">
-                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
-                        <div class="flex items-center gap-2">
-                            <i class="fas fa-bell" style="color: var(--primary-dark);"></i>
-                            <span class="text-sm text-gray-700">Notificações push</span>
-                        </div>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" name="notificacoes_push" class="sr-only peer" value="1"
-                                {{ $configuracoes['notificacoes_push'] ?? true ? 'checked' : '' }}>
-                            <div
-                                class="w-9 h-5 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all">
-                            </div>
-                        </label>
-                    </div>
-
-                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
-                        <div class="flex items-center gap-2">
-                            <i class="fas fa-envelope" style="color: var(--primary-dark);"></i>
-                            <span class="text-sm text-gray-700">Notificações por e-mail</span>
-                        </div>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" name="notificacoes_email" class="sr-only peer" value="1"
-                                {{ $configuracoes['notificacoes_email'] ?? true ? 'checked' : '' }}>
-                            <div
-                                class="w-9 h-5 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all">
-                            </div>
-                        </label>
-                    </div>
-
-                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
-                        <div class="flex items-center gap-2">
-                            <i class="fas fa-language" style="color: var(--primary-dark);"></i>
-                            <span class="text-sm text-gray-700">Idioma</span>
-                        </div>
-                        <select name="idioma" class="text-sm border border-gray-200 rounded-lg px-2 py-1">
-                            <option value="pt" {{ ($configuracoes['idioma'] ?? 'pt') == 'pt' ? 'selected' : '' }}>
-                                Português</option>
-                            <option value="en" {{ ($configuracoes['idioma'] ?? '') == 'en' ? 'selected' : '' }}>
-                                English</option>
-                            <option value="es" {{ ($configuracoes['idioma'] ?? '') == 'es' ? 'selected' : '' }}>
-                                Español</option>
-                        </select>
-                    </div>
-
-                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
-                        <div class="flex items-center gap-2">
-                            <i class="fas fa-shield-alt" style="color: var(--primary-dark);"></i>
-                            <span class="text-sm text-gray-700">Privacidade</span>
-                        </div>
-                        <i class="fas fa-chevron-right text-gray-400 text-sm"></i>
-                    </div>
-
-                    <div class="flex items-center justify-between py-2">
-                        <div class="flex items-center gap-2">
-                            <i class="fas fa-info-circle" style="color: var(--primary-dark);"></i>
-                            <span class="text-sm text-gray-700">Versão do app</span>
-                        </div>
-                        <span class="text-xs text-gray-500">2.0.1</span>
-                    </div>
-                </div>
-
-                <button type="submit" class="w-full mt-5 py-2 rounded-lg text-white font-medium"
-                    style="background: var(--primary-dark);">
-                    Salvar Configurações
-                </button>
-            </form>
-
-            <button id="closeSettingsFooterBtn"
-                class="w-full mt-3 py-2 rounded-lg border border-gray-300 text-gray-600 font-medium">
-                Fechar
-            </button>
         </div>
     </div>
 @endsection
