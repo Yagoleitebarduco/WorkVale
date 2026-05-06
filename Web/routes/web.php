@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\RegisterCompanyController;
+use App\Http\Controllers\WorkController;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MuralController;
@@ -41,6 +42,8 @@ Route::middleware('auth:web')->group(function () {
     Route::get('/mural', [MuralController::class, 'showToMuralScreen'])->name('user.mural');
 
     Route::get('/wallet', [WalletController::class, 'showToWalletScreen'])->name('user.walet');
+
+    Route::post('/user/{id}', [WorkController::class, 'apply'])->name('applicants');
 });
 
 // Rotas Protegidas para as empresas

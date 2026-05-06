@@ -231,7 +231,8 @@
                                             <i class="fas fa-map-marker-alt text-Primary-dark"></i>
                                             <span class="text-xs text-gray-500">Localização</span>
                                         </div>
-                                        <p class="font-medium text-gray-800">{{ $work->company->city->city }}, {{ $work->company->city->uf }}</p>
+                                        <p class="font-medium text-gray-800">{{ $work->company->city->city }},
+                                            {{ $work->company->city->uf }}</p>
                                     </div>
 
                                     <div class="info-card p-3 rounded-xl bg-gray-100">
@@ -309,17 +310,18 @@
                             <!-- Botões de Ação -->
                             <div class="flex gap-3 pt-4 border-t border-gray-100">
                                 <button @click="show = false"
-                                    class="flex-1 py-3 rounded-xl border border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition">
+                                    class="flex-1 py-3  rounded-xl border border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition">
                                     <i class="fas fa-times mr-2"></i> Fechar
                                 </button>
                                 <button
                                     class="flex-1 py-3 rounded-xl font-semibold transition bg-Primary-light border border-Primary-dark">
                                     <i class="far fa-bookmark mr-2"></i> Salvar
                                 </button>
-                                <button
-                                    class=" flex-1 py-3 rounded-xl text-white font-semibold transition bg-Primary-dark">
+
+                                <a class=" flex-1 py-3 px-6 rounded-xl cursor-pointer text-white font-semibold transition bg-Primary-dark hover:bg-Primary duration-150"
+                                    href="{{ route('applicants', $work->id) }}">
                                     <i class="fas fa-paper-plane mr-2"></i> Candidatar-se
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </x-modal-works>

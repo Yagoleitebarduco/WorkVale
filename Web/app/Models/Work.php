@@ -28,4 +28,8 @@ class Work extends Model
     public function skills() {
         return $this->belongsToMany(Skill::class, 'skill_work');
     }
+
+    public function applicants() {
+        return $this->belongsToMany(User::class, 'user_work');
+    }
 }
