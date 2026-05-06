@@ -8,8 +8,11 @@ use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\RegisterCompanyController;
 
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MuralController;
+use App\Http\Controllers\WalletController;
+
+// Company
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NewWorkController;
 
 // Controller - Fim
@@ -36,6 +39,8 @@ Route::middleware('auth:web')->group(function () {
     Route::get('/home', [HomeController::class, 'showToHomeScreen'])->name('user.home');
 
     Route::get('/mural', [MuralController::class, 'showToMuralScreen'])->name('user.mural');
+
+    Route::get('/wallet', [WalletController::class, 'showToWalletScreen'])->name('user.walet');
 });
 
 // Rotas Protegidas para as empresas

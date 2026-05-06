@@ -47,4 +47,6 @@ class Company extends Authenticatable
     public function areas_activies() {
         return $this->belongsTo(AreaActivy::class);
     }
+
+    
 }

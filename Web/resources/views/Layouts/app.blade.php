@@ -8,6 +8,8 @@
     <!-- TailwindCSS CDN + Font Awesome -->
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    {{-- Chart.js --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
     {{-- Alpine.js --}}
@@ -63,11 +65,19 @@
                 <span class=" text-xs mt-1">Meus Jobs</span>
             </a>
 
-            <a href="#"
-                class="flex flex-col items-center decoration-0 {{ request()->routeIs('walet') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
-                <i class="fas fa-wallet text-lg"></i>
-                <span class=" text-xs mt-1">Carteira</span>
-            </a>
+            @if (Auth::guard('web')->check())
+                <a href="{{ route('user.walet') }}"
+                    class="flex flex-col items-center decoration-0 {{ request()->routeIs('user.walet') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
+                    <i class="fas fa-wallet text-lg"></i>
+                    <span class=" text-xs mt-1">Carteira</span>
+                </a>
+            @elseif (Auth::guard('company')->check())
+                <a href="{{ route('company.newwork') }}"
+                    class="flex flex-col items-center decoration-0  {{ request()->routeIs('company.newwork') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
+                    <i class="fas fa-plus text-lg"></i>
+                    <span class=" text-xs mt-1">New Work</span>
+                </a>
+            @endif
         </div>
         <div style="height: 5rem;"></div>
     </div>

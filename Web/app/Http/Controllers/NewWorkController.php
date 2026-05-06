@@ -55,7 +55,7 @@ class NewWorkController extends Controller
 
         $work = Work::create($data);
 
-        $work->skill()->sync($request->skills);
+        $work->skills()->sync($request->skills);
         
         return redirect()->route('company.dashboard');
     }
