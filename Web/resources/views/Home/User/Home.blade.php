@@ -14,9 +14,12 @@
             <a href="#" class="bg-white/20 rounded-xl p-2 cursor-pointer transition duration-400">
                 <i class="far fa-bell text-lg text-white"></i>
             </a>
-            <a href="#" class="bg-Secondary rounded-xl p-2 cursor-pointer transition duration-400">
-                <i class="far fa-user-circle text-lg text-black "></i>
-            </a>
+            @if (Auth::guard('web')->check())
+                <a href="{{ route('user.perfil', ['name' => Str::slug(Auth::user()->complete_name)]) }}"
+                    class="bg-Secondary rounded-xl p-2 cursor-pointer transition duration-400">
+                    <i class="far fa-user-circle text-lg text-black "></i>
+                </a>
+            @endif
         </div>
     </div>
 
@@ -25,17 +28,6 @@
         <h2 class="text-2xl font-semibold text-white mb-1">
             Olá, <span class=" font">{{ Auth::user()->complete_name }}</span>
         </h2>
-
-        <div>
-            <form action="{{ route('logout') }}" method="post"
-                class="mx-2 p-2 w-20 rounded-2xl text-black bg-Primary-light  text-center">
-                @csrf
-                <button type="submit" class="cursor-pointer">
-                    Sair
-                </button>
-            </form>
-
-        </div>
         <p class="text-xs text-gray-300">3 novos desafios disponíveis para você</p>
     </div>
 

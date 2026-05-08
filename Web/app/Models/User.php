@@ -49,10 +49,10 @@ class User extends Authenticatable
     }
 
     public function city() {
-        return $this->belongsTo(City::class);
+        return $this->belongsTo(City::class, 'city_id');
     }
 
-    public function skill() {
+    public function skills() {
         return $this->belongsToMany(Skill::class, 'skill_user');
     }
 

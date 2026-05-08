@@ -7,6 +7,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\RegisterCompanyController;
 use App\Http\Controllers\WorkController;
+use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MuralController;
@@ -34,6 +35,9 @@ Route::post('/register/user', [RegisterUserController::class, 'storeUser']);
 Route::get('/register/company', [RegisterCompanyController::class, 'showToRegisterCompany'])->name('register.company');
 Route::post('/register/company', [RegisterCompanyController::class, 'storeCompany']);
 
+// Rota da tela de perfil
+Route::get('/perfil/{name}', [UserController::class, 'showToUserScreen'])->name('user.perfil');
+
 
 // Rotas Protegidas para os freelancres
 Route::middleware('auth:web')->group(function () {
@@ -49,6 +53,8 @@ Route::middleware('auth:web')->group(function () {
 // Rotas Protegidas para as empresas
 Route::middleware('auth:company')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'showToDashboardScreen'])->name('company.dashboard');
+
+    Route::put('/update/works', [WorkController::class, 'updateWorks'])->name('work.update');
 
     // Rotas para tela de criação de trabalhos
     Route::get('/newwork', [NewWorkController::class, 'showToNewWorkScreen'])->name('company.newwork');

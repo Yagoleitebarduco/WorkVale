@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Skill;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,6 +16,8 @@ class DashboardController extends Controller
 
         $works = Work::where('companies_id', $userId)->with('skills')->get();
 
-        return view('Home.Company.Dashboard', compact('works'));
+        $allSkills = Skill::all();
+
+        return view('Home.Company.Dashboard', compact('works', 'allSkills'));
     }
 }

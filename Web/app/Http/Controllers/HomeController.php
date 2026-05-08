@@ -16,6 +16,6 @@ class HomeController extends Controller
     public function showToHomeScreen() {
         $works = Work::with(['company', 'skills'])->get();
 
-        return view('Home.User.Home', compact('works',));
+        return view('Home.User.Home', compact('works'));
     }
 }
