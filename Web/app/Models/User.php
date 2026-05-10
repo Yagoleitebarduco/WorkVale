@@ -56,7 +56,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Skill::class, 'skill_user');
     }
 
-    public function applicants() {
+    public function appliedWorks() {
         return $this->belongsToMany(Work::class, 'user_work');
     }
 }

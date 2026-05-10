@@ -11,11 +11,11 @@ use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MuralController;
+use App\Http\Controllers\MyJobsController;
 use App\Http\Controllers\WalletController;
 
 // Company
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\NewWorkController;
 
 // Controller - Fim
 
@@ -41,22 +41,35 @@ Route::get('/perfil/{name}', [UserController::class, 'showToUserScreen'])->name(
 
 // Rotas Protegidas para os freelancres
 Route::middleware('auth:web')->group(function () {
-    Route::get('/home', [HomeController::class, 'showToHomeScreen'])->name('user.home');
+    Route::get('/user/home', [HomeController::class, 'showToHomeScreen'])->name('user.home');
 
-    Route::get('/mural', [MuralController::class, 'showToMuralScreen'])->name('user.mural');
+    Route::get('/user/mural', [MuralController::class, 'showToMuralScreen'])->name('user.mural');
 
-    Route::get('/wallet', [WalletController::class, 'showToWalletScreen'])->name('user.walet');
+    Route::get('/user/myjobs', [MyJobsController::class, 'showToMyJobsScreen'])->name('user.myjobs');
 
-    Route::post('/user/{id}', [WorkController::class, 'apply'])->name('applicants');
+    Route::get('/user/wallet', [WalletController::class, 'showToWalletScreen'])->name('user.wallet');
+
+    // Candidatar-se
+    Route::post('/apply/{id}', [WorkController::class, 'apply'])->name('work.apply');
 });
 
 // Rotas Protegidas para as empresas
 Route::middleware('auth:company')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'showToDashboardScreen'])->name('company.dashboard');
+    Route::get('/company/dashboard', [DashboardController::class, 'showToDashboardScreen'])->name('company.dashboard');
 
-    Route::put('/update/works', [WorkController::class, 'updateWorks'])->name('work.update');
+    // Tela de formulario de Criação
+    Route::get('/company/newwork', [WorkController::class, 'showToNewWorkScreen'])->name('company.newwork'); 
 
-    // Rotas para tela de criação de trabalhos
-    Route::get('/newwork', [NewWorkController::class, 'showToNewWorkScreen'])->name('company.newwork');
-    Route::post('/newwork', [NewWorkController::class, 'store']);
+    Route::get('/company/myjobs', [MyJobsController::class, 'showToMyJobsScreen'])->name('company.myjobs');
+
+    Route::get('/company/wallet', [WalletController::class, 'showToWalletScreen'])->name('company.wallet');
+
+    
+    // Rotas para tela de CRUD de trabalhos
+    Route::post('/company/newwork', [WorkController::class, 'store']); // Criação de Trabalho
+    Route::put('/update/works/{id}', [WorkController::class, 'updateWorks'])->name('work.update'); // Update de Trabalhos
+    Route::delete('/work/{id}', [WorkController::class, 'destroy'])->name('works.delete');
+
+    // Rota para contratar um freelancer / efetivo
+    Route::patch('/contract/aplicants/{workid}/{id}', [WorkController::class, 'acceptApplicant'])->name('work.accept');
 });

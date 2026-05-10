@@ -30,6 +30,6 @@ class Work extends Model
     }
 
     public function applicants() {
-        return $this->belongsToMany(User::class, 'user_work');
+        return $this->belongsToMany(User::class, 'user_work')->withPivot('accept')->withTimestamps();
     }
 }

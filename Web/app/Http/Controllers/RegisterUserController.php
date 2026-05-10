@@ -67,7 +67,7 @@ class RegisterUserController extends Controller
 
         $user = User::create($request->all());
         
-        $user->skill()->sync($request->skills);
+        $user->skills()->sync($request->skills);
 
         return redirect()->route('login');
     }

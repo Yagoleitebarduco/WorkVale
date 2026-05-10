@@ -35,19 +35,19 @@
     <div class="grid grid-cols-3 gap-3">
         <div class="bg-gray-100/20 rounded-xl p-3 text-center">
             <i class="fas fa-folder-open text-Secondary text-base"></i>
-            <p class="text-white text-lg font-semibold mt-1">12</p>
+            <p class="text-white text-lg font-semibold mt-1">--</p>
             <p class="text-white/70 text-xs">Projetos</p>
         </div>
 
         <div class="bg-gray-100/20 rounded-xl p-3 text-center">
             <i class="fas fa-award text-Secondary text-base"></i>
-            <p class="text-white text-lg font-semibold mt-1">8</p>
+            <p class="text-white text-lg font-semibold mt-1">--</p>
             <p class="text-white/70 text-xs">Conquistas</p>
         </div>
 
         <div class="bg-gray-100/20 rounded-xl p-3 text-center">
             <i class="fas fa-chart-line text-Secondary text-base"></i>
-            <p class="text-white text-lg font-semibold mt-1">R$ 4.8k</p>
+            <p class="text-white text-lg font-semibold mt-1">--</p>
             <p class="text-white/70 text-xs">Ganhos</p>
         </div>
     </div>
@@ -302,19 +302,31 @@
                             <!-- Botões de Ação -->
                             <div class="flex gap-3 pt-4 border-t border-gray-100">
                                 <button @click="show = false"
-                                    class="flex-1 py-3  rounded-xl border border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition">
+                                    class="flex-1 py-3 rounded-xl border border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition cursor-pointer">
                                     <i class="fas fa-times mr-2"></i> Fechar
                                 </button>
+
                                 <button
-                                    class="flex-1 py-3 rounded-xl font-semibold transition bg-Primary-light border border-Primary-dark">
+                                    class="flex-1 py-3 rounded-xl font-semibold transition bg-Primary-light border border-Primary-dark cursor-pointer">
                                     <i class="far fa-bookmark mr-2"></i> Salvar
                                 </button>
 
-                                <a class=" flex-1 py-3 px-6 rounded-xl cursor-pointer text-white font-semibold transition bg-Primary-dark hover:bg-Primary duration-150"
-                                    href="{{ route('applicants', $work->id) }}">
-                                    <i class="fas fa-paper-plane mr-2"></i> Candidatar-se
-                                </a>
+                                <form action="{{ route('work.apply', $work->id) }}" method="post" class="flex-1">
+                                    @csrf
+                                    @php
+                                        $isApplied = $work->applicants->contains(Auth::id());
+                                    @endphp
+
+                                    <button type="submit"
+                                        class="w-full py-3 rounded-xl font-semibold transition bg-Primary-dark text-white cursor-pointer">
+
+                                        <i class="fas {{ $isApplied ? 'fa-check' : 'fa-paper-plane' }} mr-2"></i>
+                                        {{ $isApplied ? 'Candidatado' : 'Candidatar-se' }}
+
+                                    </button>
+                                </form>
                             </div>
+                            
                         </div>
                     </x-modal-works>
                 </div>

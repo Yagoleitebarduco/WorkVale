@@ -21,7 +21,8 @@ return new class extends Migration
             $table->integer('duration');
             $table->string('type_work');
             $table->decimal('payment', 10, 2);
-            $table->string('status')->nullable();
+            $table->integer('status')->default(1);
+            // 1 = Ativas, 2 = Em Andamento, 3 = Concluidos, 4 = Em Atraso
             $table->timestamps();
         });
     }

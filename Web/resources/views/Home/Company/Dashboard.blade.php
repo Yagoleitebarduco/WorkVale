@@ -36,21 +36,32 @@
     </div>
 
     <!-- Stats Cards (3 cards) -->
+    @php
+        $totalApplicants = $works->sum('applicants_count');
+    @endphp
     <div class="grid grid-cols-3 gap-3 mb-6">
         <div class="stat-card bg-white rounded-xl p-3 text-center shadow-sm border border-gray-100">
             <div class="w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2 bg-Primary-light">
                 <i class="fas fa-briefcase text-lg text-Primary"></i>
             </div>
-
-            <p class="text-xl font-bold text-gray-800">{{ $vagasAtivas ?? 24 }}</p>
+            @if ($works->count() > 0)
+                <p class="text-xl font-bold text-gray-800">{{ $works->count() }}</p>
+            @else
+                <p class="text-xl font-bold text-gray-800">--</p>
+            @endif
             <p class="text-xs text-gray-500">Vagas ativas</p>
         </div>
 
         <div class="stat-card bg-white rounded-xl p-3 text-center shadow-sm border border-gray-100">
+
             <div class="w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2 bg-Success/15">
                 <i class="fas fa-users text-lg text-green-500"></i>
             </div>
-            <p class="text-xl font-bold text-gray-800">{{ $totalCandidatos ?? 156 }}</p>
+            @if ($totalApplicants >= 1)
+                <p class="text-xl font-bold text-gray-800">{{ $totalApplicants }}</p>
+            @else
+                <p class="text-xl font-bold text-gray-800">--</p>
+            @endif
             <p class="text-xs text-gray-500">Candidatos</p>
         </div>
 
@@ -58,7 +69,7 @@
             <div class="w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2 bg-Secondary/15">
                 <i class="fas fa-check-circle text-lg text-yellow-500"></i>
             </div>
-            <p class="text-xl font-bold text-gray-800">{{ $contratacoes ?? 89 }}</p>
+            <p class="text-xl font-bold text-gray-800">--</p>
             <p class="text-xs text-gray-500">Contratações</p>
         </div>
     </div>
@@ -131,7 +142,7 @@
                     <h3 class="font-semibold text-gray-800 text-sm">Vagas Recentes</h3>
                     <p class="text-xs text-gray-400">Últimas vagas publicadas</p>
                 </div>
-                <a href="#" class="text-xs text-Primary-dark">
+                <a href="{{ route('company.myjobs') }}" class="text-xs text-Primary-dark">
                     Ver todas
                 </a>
             </div>
@@ -140,12 +151,15 @@
 
         <div class="divide-y divide-gray-100">
             @forelse ($works as $work)
-                <div class="recent-item p-3 flex items-center justify-between">
+                <div class="p-3 flex items-center justify-between">
                     <div class="flex justify-between w-full">
                         <div>
                             <h4 class="font-medium text-gray-800 text-sm">{{ $work->name_work }}</h4>
                             <p class="text-xs text-gray-400 mt-0.5">
-                                candidatos • há {{ $work->duration }} dias</p>
+                                {{ $work->applicants_count }}
+                                {{ $work->applicants_count == 1 ? 'candidato' : 'candidatos' }}
+                                • há {{ $work->created_at->locale('pt_BR')->diffForHumans()}}
+                            </p>
                         </div>
 
                         <div class="flex gap-3">
@@ -228,10 +242,11 @@
 
 
                                                         {{-- Nome --}}
-                                                        <div class="md:col-span-2">
+                                                        <div class="md:col-span-2 mb-2">
                                                             <label class="block text-sm font-medium text-gray-700 mb-1">Nome
                                                                 do trabalho</label>
-                                                            <input type="text" name="name_work" value="{{ $work->name_work }}"
+                                                            <input type="text" name="name_work"
+                                                                value="{{ $work->name_work }}"
                                                                 class="w-full border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-Primary-dark"
                                                                 placeholder="Ex: Desenvolvimento de Landing Page" required>
                                                         </div>
@@ -240,7 +255,7 @@
                                                         <div class="md:col-span-2">
                                                             <label
                                                                 class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
-                                                            <textarea name="description_work"rows="5"
+                                                            <textarea name="description_work" rows="5"
                                                                 class="w-full border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-Primary-dark">
                                                                 {{ $work->description_work }}
                                                             </textarea>
@@ -394,7 +409,8 @@
                                                             <label
                                                                 class="block text-sm font-medium text-gray-700 mb-1">Pagamento
                                                                 (R$)</label>
-                                                            <input type="number" step="0.01" name="payment" value="{{ $work->payment }}"
+                                                            <input type="number" step="0.01" name="payment"
+                                                                value="{{ $work->payment }}"
                                                                 class="w-full border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-Primary-dark"
                                                                 placeholder="Ex: 1500.00" required>
                                                         </div>
@@ -411,247 +427,59 @@
                                         </div>
                                     </div>
                                 </x-modal-works>
+                            </div>
 
-                                {{-- Modal --}}
-                                {{-- <x-modal-works name="modal-{{ $work->id }}" title="{{ $work->name_work }}">
-                                    <div>
-                                        <div class="p-4">
-                                            {{-- <h1 class="text-Primary-dark font-bold mb-4 text-xl">Editando Informações do {{ $work->name_work }}</h1> --}}
+                            <div x-data="{ openDelete: false }">
+                                <button @click="openDelete = true" class="cursor-pointer">
+                                    <i class="fa-regular fa-trash-can text-Danger"></i>
+                                </button>
 
-                                {{-- <form action="{{ route('company.newwork') }}" method="post">
+                                <div x-show="openDelete" x-cloak
+                                    class=" fixed inset-0 z-50 flex items-center justify-center bg-Dark/50 transition-all"
+                                    x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"
+                                    x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200"
+                                    x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+
+                                    <div @click.away="openDelete = false"
+                                        class="bg-white rounded-2xl p-6 max-w-sm w-full mx-4 shadow-xl"
+                                        x-transition:enter="ease-out duration-300"
+                                        x-transition:enter-start="scale-95 opacity-0"
+                                        x-transition:enter-end="scale-100 opacity-100">
+
+
+                                        <div class="text-center">
+                                            <div
+                                                class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+                                                <i class="fas fa-exclamation-triangle text-red-600"></i>
+                                            </div>
+
+                                            <h3 class="text-lg font-bold text-gray-900">Confirmar Exclusão</h3>
+                                            <p class="text-sm text-gray-500 mt-2">
+                                                Tem certeza que deseja excluir <strong>{{ $work->name_work }}</strong>?
+                                                Esta
+                                                ação não pode ser desfeita.
+                                            </p>
+                                        </div>
+
+                                        <div class="mt-6 flex gap-3">
+                                            <button @click="openDelete = false" type="button"
+                                                class="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition">
+                                                Cancelar
+                                            </button>
+                                            <form action="{{ route('works.delete', $work->id) }}" method="POST"
+                                                class="flex-1">
                                                 @csrf
+                                                @method('DELETE')
 
-                                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                    <div class="md:col-span-2">
-                                                        <label class="block text-sm font-medium text-gray-700 mb-1">Nome do
-                                                            trabalho</label>
-                                                        <input type="text" name="name_work"
-                                                            class="w-full border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-Primary-dark"
-                                                            placeholder="Ex: Desenvolvimento de Landing Page" required>
-                                                    </div>
-
-                                                    <div class="md:col-span-2">
-                                                        <label
-                                                            class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
-                                                        <textarea name="description_work" rows="5"
-                                                            class="w-full border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-Primary-dark"></textarea>
-                                                        </textarea>
-                                                    </div>
-
-                                                    <div>
-                                                        <div x-data="{
-                                                            startDate: '{{ date('Y-m-d') }}',
-                                                            endDate: '',
-                                                            calculateDays() {
-                                                                if (!this.startDate || !this.endDate) return 0;
-                                                                const start = new Date(this.startDate);
-                                                                const end = new Date(this.endDate);
-                                                                const diff = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
-                                                                return diff > 0 ? diff : 0;
-                                                            }
-                                                        }" class="grid grid-cols-2 gap-5">
-                                                            <div>
-                                                                <label for="start_date"
-                                                                    class="block text-sm font-medium text-gray-700">Data
-                                                                    inicial</label>
-                                                                <input type="date" name="start_date" x-model="startDate"
-                                                                    min="{{ date('Y-m-d') }}"
-                                                                    class="mt-2 w-full border border-gray-400 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-Primary-dark transition duration-150">
-                                                            </div>
-
-                                                            <div>
-                                                                <label for="end_date"
-                                                                    class="block text-sm font-medium text-gray-700">Data
-                                                                    final</label>
-                                                                <input type="date" name="end_date" x-model="endDate"
-                                                                    :min="startDate"
-                                                                    class="mt-2 w-full border border-gray-400 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-Primary-dark transition duration-150">
-                                                            </div>
-                                                            @error('end_date')
-                                                                <div
-                                                                    class="mt-2 text-sm text-Danger bg-red-50 p-3 rounded-lg border border-Danger">
-                                                                    {{ $message }}
-                                                                </div>
-                                                            @enderror
-
-
-                                                            <div class="flex flex-col">
-                                                                <span class="text-gray-400 text-[12px]">3 dias de prazo
-                                                                    minimo</span>
-                                                                <div class="flex items-center gap-2">
-                                                                    <label
-                                                                        class="block text-sm font-medium text-gray-700">Duração
-                                                                        (dias)
-                                                                    </label>
-                                                                    <h1 class="text-lg font-bold"
-                                                                        :class="calculateDays() < 3 && endDate !== '' ?
-                                                                            'text-Danger' : 'text-Primary-dark'"
-                                                                        x-text="calculateDays()"></h1>
-                                                                </div>
-                                                            </div>
-                                                            @error('duration')
-                                                                <div
-                                                                    class="mt-2 text-sm text-Danger bg-red-50 p-3 rounded-lg border border-Danger">
-                                                                    {{ $message }}
-                                                                </div>
-                                                            @enderror
-
-                                                            <input type="hidden" name="duration"
-                                                                :value="calculateDays()">
-                                                        </div>
-                                                    </div>
-
-                                                    <div>
-                                                        <div x-data="{ typeWork: '' }">
-                                                            <label
-                                                                class="block text-sm font-medium text-gray-700 mb-1">Tipo
-                                                                do
-                                                                trabalho</label>
-
-                                                            <div class="grid grid-cols-2 mb-1 py-4 px-2 gap-3">
-                                                                <button type="button" @click="typeWork = 'freelancer'"
-                                                                    :class="typeWork === 'freelancer' ?
-                                                                        'bg-Primary-dark text-white' :
-                                                                        'border-Primary-dark text-gray-700'"
-                                                                    class="border py-2 rounded-full hover:bg-Primary-light transition-all duration-200 cursor-pointer">
-                                                                    Freelancer
-                                                                </button>
-
-                                                                <button type="button" @click="typeWork = 'efetivo'"
-                                                                    :class="typeWork === 'efetivo' ?
-                                                                        'bg-Primary-dark text-white' :
-                                                                        'border-Primary-dark text-gray-700'"
-                                                                    class="border py-2 rounded-full hover:bg-Primary-light transition-all duration-200 cursor-pointer">
-                                                                    Efetivo
-                                                                </button>
-                                                            </div>
-                                                            @error('type_work')
-                                                                <div
-                                                                    class="mt-2 text-sm text-Danger bg-red-50 p-3 rounded-lg border border-Danger">
-                                                                    {{ $message }}
-                                                                </div>
-                                                            @enderror
-
-                                                            <input type="hidden" name="type_work" :value="typeWork"
-                                                                required>
-                                                        </div>
-                                                    </div>
-
-                                                    <div>
-                                                        <div x-data="{
-                                                            selectedSkills: [],
-                                                            skills: {{ $work->skills->toJson() }},
-                                                        
-                                                            get categories() {
-                                                                const cats = new Set();
-                                                                this.skills.forEach(skill => {
-                                                                    cats.add(skill.category);
-                                                                });
-                                                                return Array.from(cats);
-                                                            },
-                                                        
-                                                            getSkillsByCategory(category) {
-                                                                return this.skills.filter(skill => skill.category === category);
-                                                            },
-                                                        
-                                                            toggleSkill(id, name, category) {
-                                                                const index = this.selectedSkills.findIndex(s => s.id === id);
-                                                        
-                                                                if (index === -1) {
-                                                                    this.selectedSkills.push({ id, name, category });
-                                                                } else {
-                                                                    this.selectedSkills.splice(index, 1);
-                                                                }
-                                                            },
-                                                        
-                                                            isSelected(id) {
-                                                                return this.selectedSkills.some(s => s.id === id);
-                                                            },
-                                                        
-                                                            get totalSelected() {
-                                                                return this.selectedSkills.length;
-                                                            }
-                                                        }" class="space-y-6">
-
-                                                            <div>
-                                                                <label
-                                                                    class="block text-sm font-medium text-gray-700 mb-2">
-                                                                    Selecione seus serviços
-                                                                    <span class="ml-2 text-xs text-gray-500"
-                                                                        x-text="`(${totalSelected} selecionados)`"></span>
-                                                                </label>
-                                                            </div>
-
-                                                            <div class="space-y-6">
-                                                                <template x-for="category in categories"
-                                                                    :key="category">
-                                                                    <div>
-                                                                        <h4 class="text-sm font-semibold text-gray-800 mb-2 pb-1 border-b border-gray-200"
-                                                                            x-text="category"></h4>
-                                                                        <div class="flex flex-wrap gap-2">
-                                                                            <template
-                                                                                x-for="skill in getSkillsByCategory(category)"
-                                                                                :key="skill.id">
-                                                                                <button type="button"
-                                                                                    @click="toggleSkill(skill.id, skill.skill, skill.category)"
-                                                                                    :class="isSelected(skill.id) ?
-                                                                                        'bg-Primary-dark text-white border-Primary-dark' :
-                                                                                        'bg-white text-gray-700 border-gray-300 hover:bg-Primary-light'"
-                                                                                    class="px-3 py-1.5 rounded-full border text-sm transition cursor-pointer duration-150">
-                                                                                    <span
-                                                                                        x-text="isSelected(skill.id) ? '✓' : '+'"></span>
-                                                                                    <span x-text="skill.skill"></span>
-                                                                                </button>
-                                                                            </template>
-                                                                        </div>
-                                                                    </div>
-                                                                </template>
-                                                            </div>
-
-                                                            <div x-show="totalSelected > 0"
-                                                                class="text-sm text-gray-600 pt-2">
-                                                                <span class="font-medium">Selecionados:</span>
-                                                                <span
-                                                                    x-text="selectedSkills.map(s => s.name).join(', ')"></span>
-                                                            </div>
-
-                                                            <template x-for="skill in selectedSkills"
-                                                                :key="skill.id">
-                                                                <input type="hidden" name="skills[]"
-                                                                    :value="skill.id">
-                                                            </template>
-                                                        </div>
-                                                    </div>
-
-                                                    <div>
-                                                        <label
-                                                            class="block text-sm font-medium text-gray-700 mb-1">Pagamento
-                                                            (R$)</label>
-                                                        <input type="number" step="0.01" name="payment"
-                                                            class="w-full border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-Primary-dark"
-                                                            placeholder="Ex: 1500.00" required>
-                                                    </div>
-                                                </div>
-
-                                                <div class="flex gap-2 pt-4">
-                                                    <button type="submit"
-                                                        class="flex-1 py-2 rounded-xl text-white font-medium bg-Primary-dark">
-                                                        Salvar
-                                                    </button>
-                                                </div>
+                                                <button type="submit"
+                                                    class="w-full px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition font-medium">
+                                                    Sim, Excluir
+                                                </button>
                                             </form>
                                         </div>
                                     </div>
-                                </x-modal-works> --}}
+                                </div>
                             </div>
-
-                            <form action="" class="flex-1">
-                                @csrf
-
-                                <button class=" cursor-pointer">
-                                    <i class="fa-regular fa-trash-can text-Danger"></i>
-                                </button>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -683,7 +511,11 @@
 
                     <div class="flex-1">
                         <p class="text-[11px] font-medium text-gray-800">Propostas pendentes</p>
-                        <p class="text-[9px] text-gray-400">{{ $propostasPendentes ?? 3 }} aguardando</p>
+                        @if ($totalApplicants >= 1)
+                            <p class="text-[9px] text-gray-400">{{ $totalApplicants }} aguardando</p>
+                        @else
+                            <p class="text-[9px] text-gray-400">0</p>
+                        @endif
                     </div>
                 </div>
 

@@ -11,128 +11,6 @@
 
     {{-- Alpine.js --}}
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    {{-- <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap');
-
-        * {
-            font-family: 'Inter', sans-serif;
-        }
-
-        :root {
-            --primary-dark: #6A2698;
-            --primary-medium: #5A1D80;
-            --primary-light: #E2D4F0;
-            --accent-yellow: #FFC107;
-            --accent-green: #6ECB63;
-            --accent-red: #FF6B6B;
-            --accent-blue: #3498db;
-            --bg-light: #F8F9FA;
-            --text-dark: #343A40;
-            --text-gray: #6c757d;
-            --white: #FFFFFF;
-            --border-color: #e5e7eb;
-        }
-
-        .profile-header {
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary-medium));
-        }
-
-        .info-card {
-            transition: all 0.2s ease;
-        }
-
-        .info-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-        }
-
-        .stat-card {
-            transition: all 0.2s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-3px);
-        }
-
-        .edit-btn {
-            transition: all 0.2s ease;
-        }
-
-        .edit-btn:hover {
-            background: var(--primary-light);
-            transform: scale(1.05);
-        }
-
-        .modal {
-            transition: all 0.3s ease;
-        }
-
-        .modal-overlay {
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .modal-content {
-            animation: slideUp 0.3s ease-out forwards;
-        }
-
-        .form-input {
-            transition: all 0.2s ease;
-            border: 1px solid var(--border-color);
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary-dark);
-            box-shadow: 0 0 0 3px rgba(106, 38, 152, 0.1);
-        }
-
-        .skill-tag {
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-
-        .skill-tag:hover {
-            background: var(--primary-dark);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .tab-btn {
-            transition: all 0.2s ease;
-        }
-
-        .tab-btn.active {
-            background: var(--primary-dark);
-            color: white;
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--bg-light);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary-dark);
-            border-radius: 2px;
-        }
-    </style> --}}
 </head>
 
 <body class=" bg-Light">
@@ -181,7 +59,7 @@
                             <form action="{{ route('logout') }}" method="post">
                                 @csrf
                                 <button type="submit"
-                                    class="cursor-pointer p-2.5 rounded-lg text-black bg-Primary-light font-medium flex justify-center items-center gap-2">
+                                    class="cursor-pointer p-2.5 rounded-lg border-2 border-Primary-light text-Primary-light font-medium flex justify-center items-center gap-2">
                                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
                                 </button>
                             </form>
@@ -213,23 +91,23 @@
         </div>
 
         <!-- Tabs -->
-        <div x-data="{ tab: 'profissional' }" class="flex flex-col">
+        <div x-data="{ tab: 'dados' }" class="flex flex-col">
             <div class="flex gap-2 mb-6 bg-white p-1 rounded-xl shadow-sm border border-gray-100">
                 <button @click="tab = 'dados'"
                     :class="tab === 'dados' ? 'bg-Primary-dark text-white' : 'text-gray-600'"
-                    class="py-2 px-4 font-medium rounded-lg transition duration-200 flex items-center cursor-pointer">
+                    class="py-2 px-4 font-medium rounded-lg transition duration-200 flex items-center cursor-pointer flex-1">
                     <i class="fas fa-user mr-2"></i> Dados Pessoais
                 </button>
 
                 <button @click="tab = 'profissional'"
                     :class="tab === 'profissional' ? 'bg-Primary-dark text-white' : 'text-gray-600'"
-                    class="py-2 px-4 font-medium rounded-lg transition duration-200 flex items-center cursor-pointer">
+                    class="py-2 px-4 font-medium rounded-lg transition duration-200 flex items-center cursor-pointer flex-1">
                     <i class="fas fa-briefcase mr-2"></i> Perfil Profissional
                 </button>
 
                 <button @click="tab = 'seguranca'"
                     :class="tab === 'seguranca' ? 'bg-Primary-dark text-white' : 'text-gray-600'"
-                    class="py-2 px-4 font-medium rounded-lg transition duration-200 flex items-center cursor-pointer">
+                    class="py-2 px-4 font-medium rounded-lg transition duration-200 flex items-center cursor-pointer flex-1">
                     <i class="fas fa-shield-alt mr-2"></i> Segurança
                 </button>
             </div>
@@ -498,82 +376,6 @@
             </div>
         </div>
     </div>
-
-    {{-- <script>
-        // Tabs
-        const tabs = document.querySelectorAll('.tab-btn');
-        const tabContents = {
-            'pessoal': document.getElementById('pessoalTab'),
-            'profissional': document.getElementById('profissionalTab'),
-            'seguranca': document.getElementById('segurancaTab')
-        };
-
-        tabs.forEach(tab => {
-            tab.addEventListener('click', function() {
-                const tabId = this.getAttribute('data-tab');
-
-                tabs.forEach(t => {
-                    t.classList.remove('active');
-                    t.style.background = 'white';
-                    t.style.color = 'var(--text-gray)';
-                });
-
-                this.classList.add('active');
-                this.style.background = 'bg-Primary-dark';
-                this.style.color = 'white';
-
-                Object.keys(tabContents).forEach(key => {
-                    if (key === tabId) {
-                        tabContents[key].classList.remove('hidden');
-                    } else {
-                        tabContents[key].classList.add('hidden');
-                    }
-                });
-            });
-        });
-
-        // Back button
-        const backButton = document.querySelector('.fa-arrow-left').parentElement;
-        backButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            alert('Voltando para página anterior...');
-        });
-
-        // Edit buttons
-        const editButtons = document.querySelectorAll('.flex.justify-between .text-primary-dark');
-        editButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                alert('Funcionalidade de edição em desenvolvimento');
-            });
-        });
-
-        // Skill tags
-        const skillTags = document.querySelectorAll('.skill-tag');
-        skillTags.forEach(tag => {
-            tag.addEventListener('click', function() {
-                alert(`Habilidade: ${this.innerText}`);
-            });
-        });
-
-        // Excluir conta
-        const deleteBtn = document.querySelector('.border-red-300');
-        if (deleteBtn) {
-            deleteBtn.addEventListener('click', () => {
-                if (confirm('Tem certeza que deseja excluir sua conta? Esta ação é irreversível!')) {
-                    alert('Conta excluída com sucesso!');
-                }
-            });
-        }
-
-        // Update password
-        const updatePasswordBtn = document.querySelector('.bg-primary-dark');
-        if (updatePasswordBtn) {
-            updatePasswordBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                alert('Senha atualizada com sucesso!');
-            });
-        }
-    </script> --}}
 </body>
 
 </html>

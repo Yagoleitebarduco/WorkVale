@@ -23,6 +23,31 @@
             @yield('header')
         </div>
 
+        @if (session('success'))
+            <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 4000)" {{-- Some após 4 segundos --}}
+                x-transition:enter="transform ease-out duration-300 transition"
+                x-transition:enter-start="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
+                x-transition:enter-end="translate-y-0 opacity-100 sm:translate-x-0"
+                x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0" class="fixed bottom-5 right-5 z-50">
+                <div class="bg-green-600 text-white px-6 py-4 rounded-xl shadow-lg flex items-center gap-3">
+                    <i class="fas fa-check-circle text-xl"></i>
+                    <div>
+                        <p class="font-bold">Sucesso!</p>
+                        <p class="text-sm opacity-90">{{ session('success') }}</p>
+                    </div>
+                    <button @click="show = false" class="ml-4 hover:text-gray-200">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        @elseif (session('error'))
+            <div x-data="{ show: true }" x-show="show"
+                class="fixed bottom-5 right-5 bg-red-600 text-white p-4 rounded-lg shadow-lg">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <!-- Conteúdo Principal -->
         <div class="px-5">
             @yield('content')
@@ -59,23 +84,31 @@
                 </a>
             @endif
 
-            <a href="#"
-                class="flex flex-col items-center decoration-0 {{ request()->routeIs('myjobs') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
-                <i class="fas fa-briefcase text-lg"></i>
-                <span class=" text-xs mt-1">Meus Jobs</span>
-            </a>
+            @if (Auth::guard('web')->check())
+                <a href="{{ route('user.myjobs') }}"
+                    class="flex flex-col items-center decoration-0 {{ request()->routeIs('user.myjobs') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
+                    <i class="fas fa-briefcase text-lg"></i>
+                    <span class=" text-xs mt-1">Meus Jobs</span>
+                </a>
+            @elseif (Auth::guard('company')->check())
+                <a href="{{ route('company.myjobs') }}"
+                    class="flex flex-col items-center decoration-0 {{ request()->routeIs('company.myjobs') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
+                    <i class="fas fa-briefcase text-lg"></i>
+                    <span class=" text-xs mt-1">Meus Jobs</span>
+                </a>
+            @endif
 
             @if (Auth::guard('web')->check())
-                <a href="{{ route('user.walet') }}"
-                    class="flex flex-col items-center decoration-0 {{ request()->routeIs('user.walet') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
+                <a href="{{ route('user.wallet') }}"
+                    class="flex flex-col items-center decoration-0 {{ request()->routeIs('user.wallet') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
                     <i class="fas fa-wallet text-lg"></i>
                     <span class=" text-xs mt-1">Carteira</span>
                 </a>
             @elseif (Auth::guard('company')->check())
-                <a href="{{ route('company.newwork') }}"
-                    class="flex flex-col items-center decoration-0  {{ request()->routeIs('company.newwork') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
-                    <i class="fas fa-plus text-lg"></i>
-                    <span class=" text-xs mt-1">New Work</span>
+                <a href="{{ route('company.wallet') }}"
+                    class="flex flex-col items-center decoration-0 {{ request()->routeIs('company.wallet') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
+                    <i class="fas fa-wallet text-lg"></i>
+                    <span class=" text-xs mt-1">Carteira</span>
                 </a>
             @endif
         </div>
