@@ -22,6 +22,6 @@ class UserController extends Controller
 
         $user->load('skills');
 
-        return view('Admin.user', compact('user'));
+        return view('Home.user', compact('user'));
     }
 }

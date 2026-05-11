@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             AreasSeeder::class,
             CitySeeder::class,
             SkillSeeder::class,
+            AdminSeed::class,
         ]);
     }
 }

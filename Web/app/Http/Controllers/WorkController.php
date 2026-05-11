@@ -102,7 +102,7 @@ class WorkController extends Controller
 
 
     // Candidatar-se
-    public function apply(Request $request, $id)
+    public function apply($id)
     {
         $user = Auth::user();
         $work = Work::findOrFail($id);
