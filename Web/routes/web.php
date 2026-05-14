@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 // Controller - Inicio
@@ -72,4 +73,8 @@ Route::middleware('auth:company')->group(function () {
 
     // Rota para contratar um freelancer / efetivo
     Route::patch('/contract/aplicants/{workid}/{id}', [WorkController::class, 'acceptApplicant'])->name('work.accept');
+});
+
+Route::middleware('auth:admin')->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'showToAdminDashboardScreen'])->name('admin.dashboard');
 });

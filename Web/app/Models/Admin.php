@@ -2,22 +2,27 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Override;
 
-class Admin extends Model
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+class Admin extends Authenticatable
 {
+    use HasFactory, Notifiable;
+    
     protected $fillable = [
         'is_admin',
-        'admin_name',
-        'admin_email',
-        'admin_password',
+        'name',
+        'email',
+        'password',
     ];
 
     protected function casts(): array
     {
         return [
-            'password' => 'admin_password',
+            'password' => 'hashed',
         ];
     }
 }

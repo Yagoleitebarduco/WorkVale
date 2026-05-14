@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->boolean('is_admin')->default(false);
-            $table->boolean('is_freelancer')->default(true);
 
             // Dados Pessoais
             $table->string('profile_picture')->nullable();
@@ -47,7 +46,6 @@ return new class extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
             $table->boolean('is_admin')->default(false);
-            $table->boolean('is_freelancer')->default(false);
 
             // Dados da empresa
             $table->string('company_name');
@@ -73,6 +71,15 @@ return new class extends Migration
 
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
+            $table->timestamps();
+        });
+
+        Schema::create('admins', function (Blueprint $table) {
+            $table->id();
+            $table->boolean('is_admin')->default(true);
+            $table->string('name');
+            $table->string('email');
+            $table->string('password');
             $table->timestamps();
         });
 

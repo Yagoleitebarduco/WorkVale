@@ -19,16 +19,17 @@ class LoginController extends Controller
 
         if (Auth::guard('web')->attempt($credentials)) {
             $request->session()->regenerate();
-
-            if (Auth::user()->is_admin == 1) {
-                return redirect()->route('');
-            }
             return redirect()->route('user.home');
         }
 
         if (Auth::guard('company')->attempt($credentials)) {
             $request->session()->regenerate();
             return redirect()->route('company.dashboard');
+        }
+
+        if (Auth::guard('admin')->attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->route('admin.dashboard');
         }
 
         return back()->withErrors([
