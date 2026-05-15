@@ -68,7 +68,14 @@
                     <i class="fas fa-home text-lg"></i>
                     <span class=" text-xs mt-1">Dashboard</span>
                 </a>
+            @elseif (Auth::guard('admin')->check())
+                <a href="{{ route('admin.dashboard') }}"
+                    class="flex flex-col items-center decoration-0  {{ request()->routeIs('admin.dashboard') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
+                    <i class="fas fa-home text-lg"></i>
+                    <span class=" text-xs mt-1">Dashboard</span>
+                </a>
             @endif
+
 
             @if (Auth::guard('web')->check())
                 <a href="{{ route('user.mural') }}"
@@ -82,7 +89,14 @@
                     <i class="fas fa-plus text-lg"></i>
                     <span class=" text-xs mt-1">New Work</span>
                 </a>
+            @elseif (Auth::guard('admin')->check())
+                <a href="{{ route('admin.users') }}"
+                    class="flex flex-col items-center decoration-0  {{ request()->routeIs('admin.users') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
+                    <i class="fas fa-users w-5"></i>
+                    <span class=" text-xs mt-1">Usuários</span>
+                </a>
             @endif
+
 
             @if (Auth::guard('web')->check())
                 <a href="{{ route('user.myjobs') }}"
@@ -96,7 +110,14 @@
                     <i class="fas fa-briefcase text-lg"></i>
                     <span class=" text-xs mt-1">Meus Jobs</span>
                 </a>
+            @elseif (Auth::guard('admin')->check())
+                <a href="{{ route('company.dashboard') }}"
+                    class="flex flex-col items-center decoration-0  {{ request()->routeIs('company.dashboard') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
+                    <i class="fas fa-briefcase w-5"></i>
+                    <span class=" text-xs mt-1">Trabalhos</span>
+                </a>
             @endif
+
 
             @if (Auth::guard('web')->check())
                 <a href="{{ route('user.wallet') }}"
@@ -110,7 +131,31 @@
                     <i class="fas fa-wallet text-lg"></i>
                     <span class=" text-xs mt-1">Carteira</span>
                 </a>
+            @elseif (Auth::guard('admin')->check())
+                <a href="{{ route('company.dashboard') }}"
+                    class="flex flex-col items-center decoration-0  {{ request()->routeIs('company.dashboard') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
+                    <i class="fas fa-tags w-5"></i>
+                    <span class=" text-xs mt-1">Categorias</span>
+                </a>
             @endif
+
+
+            @if (Auth::guard('admin')->check())
+                <a href="{{ route('company.dashboard') }}"
+                    class="flex flex-col items-center decoration-0  {{ request()->routeIs('company.dashboard') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
+                    <i class="fas fa-credit-card w-5"></i>
+                    <span class="text-xs mt-1">Transações</span>
+                </a>
+            @endif
+
+            {{-- Denuncias Ficam na tela de users --}}
+            {{-- @if (Auth::guard('admin')->check())
+                <a href="{{ route('company.dashboard') }}"
+                    class="flex flex-col items-center decoration-0  {{ request()->routeIs('company.dashboard') ? 'text-Primary-dark' : 'text-gray-600 hover:text-Primary-dark transition duration-200' }}">
+                    <i class="fas fa-flag w-5"></i>
+                    <span class=" text-xs mt-1">Denúncias</span>
+                </a>
+            @endif --}}
         </div>
         <div style="height: 5rem;"></div>
     </div>

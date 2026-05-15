@@ -77,4 +77,5 @@ Route::middleware('auth:company')->group(function () {
 
 Route::middleware('auth:admin')->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'showToAdminDashboardScreen'])->name('admin.dashboard');
+    Route::get('/admin/users', [AdminController::class, 'showToAdminUsersScreen'])->name('admin.users');
 });
