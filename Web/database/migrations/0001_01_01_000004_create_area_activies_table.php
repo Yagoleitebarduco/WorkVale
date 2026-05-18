@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('area_activies', function (Blueprint $table) {
+        Schema::create('activity_areas', function (Blueprint $table) {
             $table->id();
-            $table->string('area_name');
-            $table->string('area_category');
+            $table->string('name');
+            $table->foreignId('category_id')->constrained('categories')->onDelete('restrict')->onUpdate('cascade');
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('area_activies');
+        Schema::dropIfExists('activity_areas');
     }
 };

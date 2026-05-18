@@ -192,10 +192,35 @@
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Pagamento (R$)</label>
-                <input type="number" step="0.01" name="payment"
+                <input type="text" placeholder="0,00" id="payment"
                     class="w-full border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-Primary-dark"
                     placeholder="Ex: 1500.00" required>
+
+                <input type="hidden" name="payment" id="payment_decimal">
             </div>
+
+            <script>
+                $(document).ready(function() {
+                    // Aplica a máscara de dinheiro no campo visível
+                    $('#payment').mask('#.##0,00', {
+                        reverse: true
+                    });
+
+                    // Evento disparado toda vez que o usuário digita algo
+                    $('#payment').on('input', function() {
+                        // 1. Pega o valor atual formatado (ex: "1.250,50")
+                        let valorFormatado = $(this).val();
+
+                        // 2. Transforma no formato decimal (ex: "1250.50")
+                        let valorDecimal = valorFormatado
+                            .replace(/\./g, '') // Remove todos os pontos de milhar
+                            .replace(',', '.'); // Substitui a vírgula decimal por ponto
+
+                        // 3. Atualiza o input hidden com o valor limpo
+                        $('#payment_decimal').val(valorDecimal);
+                    });
+                });
+            </script>
         </div>
 
         <div class="flex gap-2 pt-4">

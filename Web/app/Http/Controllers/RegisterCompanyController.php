@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityArea;
 use Illuminate\Http\Request;
 
 // Models
@@ -13,7 +14,7 @@ class RegisterCompanyController extends Controller
 {
     public function showToRegisterCompany()
     {
-        $areas = AreaActivy::all();
+        $areas = ActivityArea::all();
         $cities = City::all();
 
         return view('Auth.Register.RegisterCompany', compact('areas', 'cities'));

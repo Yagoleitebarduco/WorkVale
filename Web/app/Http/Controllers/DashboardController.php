@@ -14,7 +14,7 @@ class DashboardController extends Controller
     public function showToDashboardScreen() {
         $userId = Auth::id();
         
-        $works = Work::where('companies_id', $userId)->with('skills')->withCount('applicants')->get();
+        $works = Work::where('company_id', $userId)->with('skills')->withCount('applicants')->get();
 
         $allSkills = Skill::all();
 

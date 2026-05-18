@@ -20,7 +20,7 @@ class Company extends Authenticatable
         'company_name',
         'description',
         'cpf_cnpj',
-        'areaActivies_id',
+        'activityArea_id',
         'assessment',
         'representative_name',
         'email',
@@ -45,7 +45,7 @@ class Company extends Authenticatable
     }
 
     public function areas_activies() {
-        return $this->belongsTo(AreaActivy::class);
+        return $this->belongsTo(ActivityArea::class);
     }
 
     

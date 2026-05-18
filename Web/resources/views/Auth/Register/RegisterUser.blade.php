@@ -209,7 +209,7 @@
                     </div>
 
                     {{-- Nova Opção --}}
-                    <div>
+                    {{-- <div>
                         <div x-data="{
                             selectedSkills: [],
                             skills: {{ $skills->toJson() }},
@@ -279,6 +279,150 @@
                             <div x-show="totalSelected > 0" class="text-sm text-gray-600 pt-2">
                                 <span class="font-medium">Selecionados:</span>
                                 <span x-text="selectedSkills.map(s => s.name).join(', ')"></span>
+                            </div>
+
+                            <template x-for="skill in selectedSkills" :key="skill.id">
+                                <input type="hidden" name="skills[]" :value="skill.id">
+                            </template>
+                        </div>
+                    </div> --}}
+
+                    <div>
+                        <div x-data="{
+                            selectedSkills: [],
+                            skills: {{ $skills->toJson() }},
+                            search: '', // Nova variável para armazenar o texto digitado
+                        
+                            get categories() {
+                                const cats = new Set();
+                                // Filtragem inteligente: só mostra a categoria se ela contiver alguma skill que bate com a busca
+                                this.filteredSkills.forEach(skill => {
+                                    cats.add(skill.category);
+                                });
+                                return Array.from(cats);
+                            },
+                        
+                            // Nova computed property para centralizar o filtro da pesquisa
+                            get filteredSkills() {
+                                if (this.search.trim() === '') {
+                                    return this.skills;
+                                }
+                                return this.skills.filter(skill =>
+                                    skill.skill.toLowerCase().includes(this.search.toLowerCase())
+                                );
+                            },
+                        
+                            // Ajustado para buscar apenas dentro das skills já filtradas pela pesquisa
+                            getSkillsByCategory(category) {
+                                return this.filteredSkills.filter(skill => skill.category === category);
+                            },
+                        
+                            toggleSkill(id, name, category) {
+                                const index = this.selectedSkills.findIndex(s => s.id === id);
+                        
+                                if (index === -1) {
+                                    this.selectedSkills.push({ id, name, category });
+                                } else {
+                                    this.selectedSkills.splice(index, 1);
+                                }
+                            },
+                        
+                            isSelected(id) {
+                                return this.selectedSkills.some(s => s.id === id);
+                            },
+                        
+                            get totalSelected() {
+                                return this.selectedSkills.length;
+                            }
+                        }"
+                            class="max-w-4xl mx-auto rounded-2xl space-y-6">
+                            <div
+                                class="border-b border-gray-100 pb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                                <div>
+                                    <label class="block text-base font-semibold text-gray-900">
+                                        Selecione seus serviços
+                                    </label>
+                                    <p class="text-xs text-gray-500 mt-0.5">Digite o que procura ou explore as
+                                        categorias abaixo.</p>
+                                </div>
+                            </div>
+
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                </div>
+                                
+                                <input type="text" x-model="search"
+                                    placeholder="Buscar por uma habilidade específica... (ex: PHP, UI/UX, Financeiro)"
+                                    class="block w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-Primary-dark/20 focus:border-Primary-dark transition-all duration-150 bg-gray-50/50">
+                                <button type="button" x-show="search.length > 0" @click="search = ''"
+                                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 text-sm font-medium focus:outline-none"
+                                    style="display: none;">
+                                    Limpar
+                                </button>
+                            </div>
+
+                            <div class="space-y-8">
+                                <div x-show="categories.length === 0"
+                                    class="text-center py-8 bg-gray-50 rounded-xl border border-dashed border-gray-200 animate-fadeIn"
+                                    style="display: none;">
+                                    <p class="text-sm text-gray-500 font-medium">Nenhuma habilidade encontrada para
+                                        "<span class="font-bold text-gray-700" x-text="search"></span>"</p>
+                                </div>
+
+                                <template x-for="category in categories" :key="category">
+                                    <div class="space-y-3" x-transition>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400"
+                                                x-text="category"></h4>
+                                            <div class="h-px flex-1 bg-gradient-to-r from-gray-200 to-transparent">
+                                            </div>
+                                        </div>
+
+                                        <div class="flex flex-wrap gap-2">
+                                            <template x-for="skill in getSkillsByCategory(category)"
+                                                :key="skill.id">
+                                                <button type="button"
+                                                    @click="toggleSkill(skill.id, skill.skill, skill.category)"
+                                                    :class="isSelected(skill.id) ?
+                                                        'bg-Primary-dark text-white border-Primary-dark shadow-sm shadow-Primary-dark/10 ring-2 ring-Primary-dark/10' :
+                                                        'bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-900'"
+                                                    class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border text-sm font-medium transition-all duration-200 cursor-pointer select-none focus:outline-none">
+                                                    <span class="text-xs transition-transform duration-200"
+                                                        :class="isSelected(skill.id) ? 'scale-110 font-bold' : 'text-gray-400'"
+                                                        x-text="isSelected(skill.id) ? '✓' : '+'">
+                                                    </span>
+                                                    <span x-text="skill.skill"></span>
+                                                </button>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <div x-show="totalSelected > 0" x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-start="opacity-0 transform translate-y-2"
+                                x-transition:enter-end="opacity-100 transform translate-y-0"
+                                class="pt-4 border-t border-gray-100 space-y-2" style="display: none;">
+                                <span class="text-xs font-bold uppercase tracking-wider text-gray-400 block">Sua
+                                    seleção atual:</span>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <template x-for="skill in selectedSkills" :key="skill.id">
+                                        <span
+                                            class="inline-flex items-center gap-1 px-2.5 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-lg border border-gray-200/60 animate-fadeIn">
+                                            <span x-text="skill.name"></span>
+                                            <button type="button"
+                                                @click="toggleSkill(skill.id, skill.name, skill.category)"
+                                                class="text-gray-400 hover:text-red-500 font-bold ml-0.5 focus:outline-none">
+                                                &times;
+                                            </button>
+                                        </span>
+                                    </template>
+                                </div>
                             </div>
 
                             <template x-for="skill in selectedSkills" :key="skill.id">

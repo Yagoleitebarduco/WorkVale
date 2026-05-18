@@ -37,8 +37,8 @@
         </div>
 
         <div class="bg-white rounded-xl p-3 text-center shadow-sm border border-gray-100">
-            <i class="fas fa-check-circle text-xl" style="color: var(--accent-green);"></i>
-            <p class="text-2xl font-bold text-gray-800 mt-1>2</p>
+            <i class="fas fa-check-circle text-xl"></i>
+            <p class="text-2xl font-bold text-gray-800 mt-1">2</p>
             <p class="text-xs text-gray-500">Concluídos
             </p>
         </div>
@@ -47,22 +47,21 @@
 
 @section('content')
     <div class="max-w-2xl mx-auto">
-        <div x-data="{ tab: 'andamento' }">
+        <div x-data="{ tab: 'ativos' }">
             <!-- Tabs -->
-            <div class="flex gap-2 mb-6 bg-white p-1 rounded-xl text-sm shadow-sm border border-gray-100">
-                <button @click="tab = 'ativos'"
-                    class="flex-1 py-2.5 rounded-lg font-medium transition cursor-pointer"
+            <div class="flex gap-2 mb-6 bg-white rounded-xl p-1 text-sm shadow-sm border border-gray-100">
+                <button @click="tab = 'ativos'" class="flex-1 py-2.5 rounded-lg font-medium transition cursor-pointer"
                     :class="tab === 'ativos' ? 'bg-Primary-dark text-white' : 'text-gray-600'">
                     <i class="fa-solid fa-play mr-2"></i> Ativos
                 </button>
 
                 <button @click="tab = 'andamento'"
-                    class="flex-1 py-2.5 rounded-lg font-medium transition cursor-pointer"
+                    class="flex-1 py-3 px-1.5 rounded-lg font-medium transition cursor-pointer"
                     :class="tab === 'andamento' ? 'bg-Secondary text-black' : 'text-gray-600'">
                     <i class="fas fa-play-circle mr-2"></i> Em andamento
                 </button>
 
-                <button class="flex-1 py-2.5 rounded-lg font-medium transition text-gray-600"">
+                <button class="flex-1 py-1.5 rounded-lg font-medium transition text-gray-600"">
                     <i class="fas fa-check-circle mr-2"></i> Concluídos
                 </button>
             </div>
@@ -76,12 +75,12 @@
                                 <div class="flex-1">
                                     <div class="flex flex-col mb-2">
                                         <div class="flex items-center justify-between">
-                                            <h3 class="font-bold text-gray-800 text-base">{{ $work->name_work }}</h3>
+                                            <h3 class="font-bold flex-6 text-gray-800 text-base">{{ $work->name_work }}</h3>
 
                                             @if ($work->status == 1)
                                                 <span
-                                                    class="text-xs font-medium mb-1 rounded-full text-Primary-dark bg-Primary-light py-1.5 px-3">
-                                                    <i class="fa-solid fa-play mr-1"></i> Ativos
+                                                    class="text-xs flex-1 text-center font-medium mb-1 rounded-full text-Primary-dark bg-Primary-light py-1.5 px-3">
+                                                    Ativos
                                                 </span>
                                                 {{-- <i class="fas fa-spinner fa-pulse mr-1"></i> --}}
                                             @endif
@@ -590,7 +589,7 @@
                                 <div class="flex-1">
                                     <button x-data
                                         @click="$dispatch('open-modal', { name: 'appliacants-{{ $work->id }}'})"
-                                        class="w-full py-2 rounded-lg text-sm font-medium transition bg-Primary-light text-Primary-dark border border-Primary-dark cursor-pointer">
+                                        class="w-full py-2 rounded-lg text-sm font-medium transition bg-Primary-light border-2 border-Primary-dark text-Primary-dark cursor-pointer">
                                         <i class="fa-solid fa-user-group"></i> Ver Candidatos
                                     </button>
 
@@ -795,7 +794,8 @@
                                 <div class="flex-1">
                                     <div class="flex flex-col mb-2">
                                         <div class="flex items-center gap-1 justify-between">
-                                            <h3 class="font-bold flex-2 text-gray-800 text-base">{{ $work->name_work }}</h3>
+                                            <h3 class="font-bold flex-2 text-gray-800 text-base">{{ $work->name_work }}
+                                            </h3>
 
                                             @if ($work->status == 2)
                                                 <span
@@ -1115,8 +1115,8 @@
                                                                             class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
                                                                         <textarea name="description_work" rows="5"
                                                                             class="w-full border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-Primary-dark">
-                                                                {{ $work->description_work }}
-                                                        </textarea>
+                                                                            {{ $work->description_work }}
+                                                                        </textarea>
                                                                     </div>
 
                                                                     {{-- Tipo de trabalho --}}
@@ -1278,15 +1278,41 @@
                                                                         </template>
                                                                     </div>
 
-                                                                    <div class="mb-2">
+                                                                    <div>
                                                                         <label
                                                                             class="block text-sm font-medium text-gray-700 mb-1">Pagamento
                                                                             (R$)</label>
-                                                                        <input type="number" step="0.01"
-                                                                            name="payment" value="{{ $work->payment }}"
+                                                                        <input type="text" placeholder="0,00"
+                                                                            id="payment"
                                                                             class="w-full border border-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-Primary-dark"
                                                                             placeholder="Ex: 1500.00" required>
+
+                                                                        <input type="hidden" name="payment"
+                                                                            id="payment_decimal">
                                                                     </div>
+
+                                                                    <script>
+                                                                        $(document).ready(function() {
+                                                                            // Aplica a máscara de dinheiro no campo visível
+                                                                            $('#payment').mask('#.##0,00', {
+                                                                                reverse: true
+                                                                            });
+
+                                                                            // Evento disparado toda vez que o usuário digita algo
+                                                                            $('#payment').on('input', function() {
+                                                                                // 1. Pega o valor atual formatado (ex: "1.250,50")
+                                                                                let valorFormatado = $(this).val();
+
+                                                                                // 2. Transforma no formato decimal (ex: "1250.50")
+                                                                                let valorDecimal = valorFormatado
+                                                                                    .replace(/\./g, '') // Remove todos os pontos de milhar
+                                                                                    .replace(',', '.'); // Substitui a vírgula decimal por ponto
+
+                                                                                // 3. Atualiza o input hidden com o valor limpo
+                                                                                $('#payment_decimal').val(valorDecimal);
+                                                                            });
+                                                                        });
+                                                                    </script>
 
                                                                     <div class="flex gap-2 pt-4">
                                                                         <button type="submit"
@@ -1370,7 +1396,7 @@
                                                     data-rating="4.7" data-date="2024-04-04" data-price="1500">
                                                     <div class="flex gap-4">
                                                         <div
-                                                            class="w-16 h-16 rounded-full bg-gradient-to-br from-gray-500 to-gray-600 flex items-center justify-center text-white text-xl font-bold">
+                                                            class="w-16 h-16 rounded-full bg-linear-to-br from-gray-500 to-gray-600 flex items-center justify-center text-white text-xl font-bold">
                                                             CS
                                                         </div>
 

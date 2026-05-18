@@ -71,10 +71,10 @@
                         </label>
 
                         <select class="form-select w-full px-4 py-2.5 rounded-lg bg-gray-50 focus:bg-white"
-                            name="areaActivies_id" required>
+                            name="activityArea_id" required>
                             <option class="hidden" selected>Selecione a área de atuação</option>
                             @foreach ($areas as $area)
-                                <option value="{{ $area->id }}">{{ $area->area_name }}</option>
+                                <option value="{{ $area->id }}">{{ $area->name }}</option>
                             @endforeach
                         </select>
                     </div>

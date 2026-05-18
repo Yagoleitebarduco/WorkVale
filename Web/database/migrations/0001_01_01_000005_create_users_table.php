@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('neighborhood');
             $table->string('number');
             $table->string('cep');
-            $table->foreignId('city_id')->constrained()->onDelete('cascade');
+            $table->foreignId('city_id')->constrained()->onDelete('restrict')->onUpdate('cascade');
 
             // Perfil Profisional
             $table->string('professional_title');
@@ -51,7 +51,7 @@ return new class extends Migration
             $table->string('company_name');
             $table->text('description');
             $table->string('cpf_cnpj')->unique();
-            $table->foreignId('areaActivies_id')->constrained('area_activies')->onDelete('cascade');
+            $table->foreignId('activityArea_id')->constrained('activity_areas')->onDelete('restrict')->onUpdate('cascade');
             $table->string('assessment')->nullable();
 
             // Dados do representante da empressa
@@ -64,7 +64,7 @@ return new class extends Migration
             $table->string('neighborhood');
             $table->string('number');
             $table->string('cep');
-            $table->foreignId('city_id')->constrained()->onDelete('cascade');
+            $table->foreignId('city_id')->constrained()->onDelete('restrict')->onUpdate('cascade');
 
             // Segurança
             $table->string('password');
@@ -82,8 +82,6 @@ return new class extends Migration
             $table->string('password');
             $table->timestamps();
         });
-
-
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();

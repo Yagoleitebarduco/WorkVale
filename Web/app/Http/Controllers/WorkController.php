@@ -54,7 +54,7 @@ class WorkController extends Controller
 
         $data = $request->all();
 
-        $data['companies_id'] = Auth::guard('company')->id();
+        $data['company_id'] = Auth::guard('company')->id();
 
         $work = Work::create($data);
 

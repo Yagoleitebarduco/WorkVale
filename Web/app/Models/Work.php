@@ -9,7 +9,7 @@ use Override;
 class Work extends Model
 {
     protected $fillable = [
-        'companies_id',
+        'company_id',
         'name_work',
         'description_work',
         'start_date',
@@ -21,7 +21,7 @@ class Work extends Model
     ];
 
     public function company() {
-        return $this->belongsTo(Company::class, 'companies_id');
+        return $this->belongsTo(Company::class, 'company_id');
     }
 
     

@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use App\Models\Skill;
 use App\Models\City;
 use App\Models\User;
+use App\Rules\CpfValidate;
 
 class RegisterUserController extends Controller
 {
@@ -25,18 +26,19 @@ class RegisterUserController extends Controller
 
     public function storeUser(Request $request) {
         // dd($request->all());
-
-        $date_min = Carbon::now()->subYear(18)->format('Y-m-d');
-
         // $data = $request->all();
         // $data['complete_name'] = Str::slug($request->complete_name);
+        
+        $date_min = Carbon::now()->subYear(18)->format('Y-m-d');
+
 
         $request->validate(
             [
                 'cpf' => [
                     'required',
                     'unique:users,cpf',
-                    'unique:companies,cpf_cnpj'
+                    'unique:companies,cpf_cnpj',
+                    // new CpfValidate,
                 ],
                 'birth_date' => [
                     'required',

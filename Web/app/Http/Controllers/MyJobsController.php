@@ -21,7 +21,7 @@ class MyJobsController extends Controller
 
 
         // Comapny
-        $works = Work::where('companies_id', $userId)->with('skills')->withCount('applicants')->get();
+        $works = Work::where('company_id', $userId)->with('skills')->withCount('applicants')->get();
 
         $allSkills = Skill::all();
 

@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class AreaActivy extends Model
+class ActivityArea extends Model
 {
     use HasFactory, Notifiable;
 
     protected $fillable = [
-        'area_name',
-        'area_category',
+        'name',
+        'category_id',
     ];
 }
